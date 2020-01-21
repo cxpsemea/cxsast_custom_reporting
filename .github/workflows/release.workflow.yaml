@@ -1,0 +1,19 @@
+name: Release workflow
+
+on:
+  push:
+    branches:
+      - "master"
+      - "beta"
+      - "next"
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: prepare environment
+        run: echo SKIPPING
