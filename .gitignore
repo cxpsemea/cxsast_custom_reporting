@@ -1,5 +1,6 @@
 ## untracked folders
 build
+config
 dist
 node_modules
 
