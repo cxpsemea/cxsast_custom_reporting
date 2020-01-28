@@ -1,4 +1,6 @@
 import { ConfigurationService } from './ConfigurationService';
 import { LoggerService } from './LoggerService';
+import { SmtpService } from './SmtpService';
+import { HtmlRenderingService } from './HtmlRenderingService';
 
-export { ConfigurationService, LoggerService };
+export { ConfigurationService, HtmlRenderingService, LoggerService, SmtpService };

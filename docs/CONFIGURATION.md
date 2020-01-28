@@ -2,20 +2,21 @@
 
 The `cxsast_custom_reporting` application relies on two types of configurations: `global configuration` and `run-time configuration`.
 
-While `global configuration` defines how appllication will communicate with other software (e.g CxSAST, SMTP, etc.) `run-time configuration` defines the behavior and actions that will be executed.
+While `global configuration` defines how appllication will communicate with other rquired software (e.g DB, SMTP, etc.) `run-time configuration` defines the behavior and actions that will be executed by application.
 
-This document describes in details both configurations over the next topics.
+This document describes in details both configurations over the next sections.
 
 ## Global configuration
 
 Global configuration is defined on the `<APP-ROOT>\config\config.ini`.
-The file is divided in sections where each section is have definitions of key-value pairs as the example bellow:
+The file is divided in sections, were each section have key-value pairs representing the required information in order to communicate with a specific external application. Bellow is a example of a global configuration file:
 
 ```ini
-[sast]
-url=http://localenv.net
-username=cxsastuser@enterprise.net
-password=cxsastuser_password
+[database]
+host=smtp.enterprise.net
+port=465
+username=smtpuser@enterprise.net
+password=smtpuser_password
 
 [smtp]
 host=smtp.enterprise.net
@@ -24,19 +25,36 @@ username=smtpuser@enterprise.net
 password=smtpuser_password
 ```
 
-Currently global configuration file supports the following information:
+The global configuration file supports the sections described bellow:
 
-| Key        | type       | M/O | Description                                                            |
-| ---------- | ---------- | --- | ---------------------------------------------------------------------- |
-| `[sast]`   |            | _M_ | defines the section relatd with CxSAST configuration                   |
-| `url`      | _`string`_ | _M_ | the url that application will use to communicate with CxSAST Manager   |
-| `username` | _`string`_ | _M_ | the user that will be used to communicate with CxSAST Manager          |
-| `password` | _`string`_ | _M_ | the user password that will be used to communicate with CxSAST Manager |
-| `[smtp]`   |            | _M_ | defines the section related with SMTP configuration                    |
-| `host`     | _`string`_ | _M_ | the smtp host that will be used by application                         |
-| `port`     | _`number`_ | _M_ | the smtp port that will be used by application                         |
-| `username` | _`string`_ | _M_ | the smtp user that will be used by application                         |
-| `password` | _`string`_ | _M_ | the smtp user password that will be used by application                |
+| Section      | M/O | Description                                                            |
+| ------------ | --- | ---------------------------------------------------------------------- |
+| `[database]` | _M_ | defines the configuration required to communicate with CxSAST database |
+| `[smtp]`     | _M_ | defines the configuration required to communicate with email services  |
+
+### database section
+
+The database section is responsible for handling CxSAST database communication parameters. The following keys are supported:
+
+| Key          | type       | M/O | Description               |
+| ------------ | ---------- | --- | ------------------------- |
+| `[database]` |            | _M_ | the section name          |
+| `host`       | _`string`_ | _M_ | the database host         |
+| `port`       | _`number`_ | _M_ | the database port         |
+| `username`   | _`string`_ | _M_ | the database user name    |
+| `password`   | _`string`_ | _M_ | the dataase user password |
+
+### smtp section
+
+The smtp section is responsible for handling email service communication parameters. The following keys are supported:
+
+| Key        | type       | M/O | Description                   |
+| ---------- | ---------- | --- | ----------------------------- |
+| `[smtp]`   |            | _M_ | the section name              |
+| `host`     | _`string`_ | _M_ | the smtp server host          |
+| `port`     | _`number`_ | _M_ | the smtp server port          |
+| `username` | _`string`_ | _M_ | the smtp server user name     |
+| `password` | _`string`_ | _M_ | the smtp server user password |
 
 ## Run-Time configuration
 

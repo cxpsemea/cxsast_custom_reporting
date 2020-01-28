@@ -9,13 +9,17 @@ export interface IConfigurationService {
 
 export interface IConfigurationObject {
     version: string;
+    logger: {
+        level: string;
+    };
     report: {
         type: string;
         template: string;
         audience: string;
     };
-    sast: {
-        url: string;
+    database: {
+        host: string;
+        port: string;
         username: string;
         password: string;
     };

@@ -2,20 +2,23 @@ import PropertiesReader from 'properties-reader';
 import yargs from 'yargs';
 import { IConfigurationService, IConfigurationObject } from './ConfigurationService';
 import ConfigurationError from './error/ConfigurationError';
-import { isUrl, isFqdn, isIPV4 } from '../../common/Validator';
+import { isFqdn, isIPV4 } from '../../common/Validator';
 import { readFile } from '../../common/Utilities';
 
 import {
     FILE_VERSION,
+    DEFAULT_REPORT_TYPE,
     CONFIG_FILE,
-    CONFIG_FILE_KEY_SAST_URL,
-    CONFIG_FILE_KEY_SAST_USERNAME,
-    CONFIG_FILE_KEY_SAST_PASSWORD,
+    CONFIG_FILE_KEY_DATABASE_HOST,
+    CONFIG_FILE_KEY_DATABASE_PORT,
+    CONFIG_FILE_KEY_DATABASE_USERNAME,
+    CONFIG_FILE_KEY_DATABASE_PASSWORD,
     CONFIG_FILE_KEY_SMTP_HOST,
     CONFIG_FILE_KEY_SMTP_PORT,
     CONFIG_FILE_KEY_SMTP_USERNAME,
     CONFIG_FILE_KEY_SMTP_PASSWORD,
     CONFIG_FILE_KEY_SMTP_SENDER,
+    CONFIG_FILE_KEY_LOGGER_LEVEL,
 } from '../../common/Constants';
 
 export default class ConfigurationServiceImpl implements IConfigurationService {
@@ -32,45 +35,24 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
 
         this.args = yargs.argv;
 
-        console.log(this.args);
-
         const version = readFile(FILE_VERSION);
-        const reportType = this.args.reportType ? this.args.reportType : 'ScanSummary';
-        const reportTemplate = this.args.reportTemplate ? this.args.reportTemplate : 'ScanSummaryTemplate';
+
+        const loggerLevel: string = this.props.get(CONFIG_FILE_KEY_LOGGER_LEVEL);
+
+        const reportType = this.args.reportType ? this.args.reportType : DEFAULT_REPORT_TYPE;
+        const reportTemplate = this.args.reportTemplate ? this.args.reportTemplate : 'ScanSummary';
         const reportAudience = this.args.reportAudience ? this.args.reportAudience : undefined;
-        const sastUrl: string = this.props.get(CONFIG_FILE_KEY_SAST_URL);
-        const sastUsername: string = this.props.get(CONFIG_FILE_KEY_SAST_USERNAME);
-        const sastPassword: string = this.props.get(CONFIG_FILE_KEY_SAST_PASSWORD);
+
+        const databaseHost: string = this.props.get(CONFIG_FILE_KEY_DATABASE_HOST);
+        const databasePort: string = this.props.get(CONFIG_FILE_KEY_DATABASE_PORT);
+        const databaseUsername: string = this.props.get(CONFIG_FILE_KEY_DATABASE_USERNAME);
+        const databasePassword: string = this.props.get(CONFIG_FILE_KEY_DATABASE_PASSWORD);
+
         const smtpHost: string = this.props.get(CONFIG_FILE_KEY_SMTP_HOST);
         const smtpPort: string = this.props.get(CONFIG_FILE_KEY_SMTP_PORT);
         const smtpUsername: string = this.props.get(CONFIG_FILE_KEY_SMTP_USERNAME);
         const smtpPassword: string = this.props.get(CONFIG_FILE_KEY_SMTP_PASSWORD);
         const smtpSender: string = this.props.get(CONFIG_FILE_KEY_SMTP_SENDER);
-
-        // ###################################################################
-        // ### valiating SAST.URL configuratoin key
-        // ###################################################################
-        if (!sastUrl) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SAST_URL);
-        }
-
-        if (!isUrl(sastUrl)) {
-            throw new ConfigurationError(ConfigurationError.INVALID_CONFIG_KEY, CONFIG_FILE_KEY_SAST_URL);
-        }
-
-        // ###################################################################
-        // ### valiating SAST.USERNAME configuratoin key
-        // ###################################################################
-        if (!sastUsername) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SAST_USERNAME);
-        }
-
-        // ###################################################################
-        // ### valiating SAST.PASSWORD configuratoin key
-        // ###################################################################
-        if (!sastPassword) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SAST_PASSWORD);
-        }
 
         // ###################################################################
         // ### valiating SMTP.HOST configuratoin key
@@ -112,15 +94,19 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
 
         this.config = {
             version,
+            logger: {
+                level: loggerLevel,
+            },
             report: {
                 type: reportType,
                 template: reportTemplate,
                 audience: reportAudience,
             },
-            sast: {
-                url: sastUrl,
-                username: sastUsername,
-                password: sastPassword,
+            database: {
+                host: databaseHost,
+                port: databasePort,
+                username: databaseUsername,
+                password: databasePassword,
             },
             smtp: {
                 host: smtpHost,
@@ -132,7 +118,7 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
             toString: () =>
                 JSON.stringify({
                     ...this.config,
-                    sast: { ...this.config.sast, username: '******', password: '******' },
+                    database: { ...this.config.database, username: '******', password: '******' },
                     smtp: { ...this.config.smtp, username: '******', password: '******' },
                 }),
         };

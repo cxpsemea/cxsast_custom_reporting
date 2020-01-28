@@ -1,2 +1,3 @@
 -   [Home](/)
+-   [Instalation](INSTALLATION.md)
 -   [Configuration](CONFIGURATION.md)
