@@ -1,6 +1,7 @@
 import validator from 'validator';
+import { statSync } from 'fs';
 
-export function isUrl(val: string): boolean {
+const isUrl = (val: string): boolean => {
     return validator.isURL(val, {
         protocols: ['http', 'https'],
         require_tld: true,
@@ -12,16 +13,50 @@ export function isUrl(val: string): boolean {
         allow_protocol_relative_urls: false,
         disallow_auth: true,
     });
-}
+};
 
-export function isFqdn(val: string): boolean {
+const isFqdn = (val: string): boolean => {
     return validator.isFQDN(val, {
         require_tld: true,
         allow_underscores: false,
         allow_trailing_dot: false,
     });
-}
+};
 
-export function isIPV4(val: string): boolean {
+const isIPV4 = (val: string): boolean => {
     return validator.isIP(val, '4');
-}
+};
+
+const isEmpty = (_val: string): boolean => {
+    if (!_val) {
+        return true;
+    }
+
+    return validator.isEmpty(String(_val), { ignore_whitespace: false });
+};
+
+const isEmail = (val: string): boolean => {
+    return validator.isEmail(val, {
+        allow_display_name: false,
+        require_display_name: false,
+        allow_utf8_local_part: false,
+        require_tld: true,
+        allow_ip_domain: false,
+        domain_specific_validation: false,
+    });
+};
+
+const isFile = (_path: string): boolean => {
+    try {
+        statSync(_path);
+        return true;
+    } catch (_e) {
+        return false;
+    }
+};
+
+const isInteger = (val: string): boolean => {
+    return validator.isInt(val, { allow_leading_zeroes: false });
+};
+
+export { isEmail, isEmpty, isFile, isFqdn, isIPV4, isUrl, isInteger };

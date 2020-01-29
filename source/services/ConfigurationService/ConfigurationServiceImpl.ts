@@ -2,118 +2,86 @@ import PropertiesReader from 'properties-reader';
 import yargs from 'yargs';
 import { IConfigurationService, IConfigurationObject } from './ConfigurationService';
 import ConfigurationError from './error/ConfigurationError';
-import { isFqdn, isIPV4 } from '../../common/Validator';
-import { readFile } from '../../common/Utilities';
-
 import {
-    FILE_VERSION,
-    DEFAULT_REPORT_TYPE,
     CONFIG_FILE,
-    CONFIG_FILE_KEY_DATABASE_HOST,
-    CONFIG_FILE_KEY_DATABASE_PORT,
-    CONFIG_FILE_KEY_DATABASE_USERNAME,
-    CONFIG_FILE_KEY_DATABASE_PASSWORD,
+    FILE_VERSION,
     CONFIG_FILE_KEY_SMTP_HOST,
     CONFIG_FILE_KEY_SMTP_PORT,
     CONFIG_FILE_KEY_SMTP_USERNAME,
     CONFIG_FILE_KEY_SMTP_PASSWORD,
     CONFIG_FILE_KEY_SMTP_SENDER,
-    CONFIG_FILE_KEY_LOGGER_LEVEL,
+    CONFIG_FILE_KEY_DATABASE_HOST,
+    CONFIG_FILE_KEY_DATABASE_PORT,
+    CONFIG_FILE_KEY_DATABASE_USERNAME,
+    CONFIG_FILE_KEY_DATABASE_PASSWORD,
+    CONFIG_ARGS_REPORT_TYPE,
+    CONFIG_ARGS_REPORT_TEMPLATE,
+    CONFIG_ARGS_REPORT_AUDIENCE,
+    CONFIG_ARGS_PROJECT_XML_REPORT,
 } from '../../common/Constants';
+import { isFile, isEmpty, isEmail, isFqdn, isIPV4, isInteger } from '../../common/Validator';
+import { readFile } from '../../common/Utilities';
+
+enum Origin {
+    CONFIG = 'CONFIG_KEY',
+    ARGUMENTS = 'ARGUMENT_KEY',
+}
+
+enum KeyType {
+    HOST,
+    INTEGER,
+    EMAIL,
+    EMAIL_LIST,
+    STRING,
+    TEMPLATE_NAME,
+    FILE_PATH,
+}
+
+const getVersion = (_path: string): string => {
+    if (!isFile(_path)) {
+        throw new ConfigurationError(ConfigurationError.MISSING_VERSION);
+    }
+    return readFile(_path);
+};
 
 export default class ConfigurationServiceImpl implements IConfigurationService {
-    private props: any;
+    private props: PropertiesReader.Reader;
     private args: any;
     private config: IConfigurationObject;
 
     constructor() {
         try {
             this.props = PropertiesReader(CONFIG_FILE);
+            this.args = yargs.argv;
         } catch (e) {
             throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_FILE, CONFIG_FILE);
         }
 
-        this.args = yargs.argv;
-
-        const version = readFile(FILE_VERSION);
-
-        const loggerLevel: string = this.props.get(CONFIG_FILE_KEY_LOGGER_LEVEL);
-
-        const reportType = this.args.reportType ? this.args.reportType : DEFAULT_REPORT_TYPE;
-        const reportTemplate = this.args.reportTemplate ? this.args.reportTemplate : 'ScanSummary';
-        const reportAudience = this.args.reportAudience ? this.args.reportAudience : undefined;
-
-        const databaseHost: string = this.props.get(CONFIG_FILE_KEY_DATABASE_HOST);
-        const databasePort: string = this.props.get(CONFIG_FILE_KEY_DATABASE_PORT);
-        const databaseUsername: string = this.props.get(CONFIG_FILE_KEY_DATABASE_USERNAME);
-        const databasePassword: string = this.props.get(CONFIG_FILE_KEY_DATABASE_PASSWORD);
-
-        const smtpHost: string = this.props.get(CONFIG_FILE_KEY_SMTP_HOST);
-        const smtpPort: string = this.props.get(CONFIG_FILE_KEY_SMTP_PORT);
-        const smtpUsername: string = this.props.get(CONFIG_FILE_KEY_SMTP_USERNAME);
-        const smtpPassword: string = this.props.get(CONFIG_FILE_KEY_SMTP_PASSWORD);
-        const smtpSender: string = this.props.get(CONFIG_FILE_KEY_SMTP_SENDER);
-
-        // ###################################################################
-        // ### valiating SMTP.HOST configuratoin key
-        // ###################################################################
-        if (!smtpHost) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SMTP_HOST);
-        }
-        if (!isFqdn && !isIPV4) {
-            throw new ConfigurationError(ConfigurationError.INVALID_CONFIG_KEY, CONFIG_FILE_KEY_SMTP_HOST);
-        }
-
-        // ###################################################################
-        // ### valiating SMTP.PORT configuratoin key
-        // ###################################################################
-        if (!smtpPort) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SMTP_PORT);
-        }
-
-        // ###################################################################
-        // ### valiating SMTP.USERNAME configuratoin key
-        // ###################################################################
-        if (!smtpUsername) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SMTP_USERNAME);
-        }
-
-        // ###################################################################
-        // ### valiating SMTP.PASSWORD configuratoin key
-        // ###################################################################
-        if (!smtpPassword) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SMTP_PASSWORD);
-        }
-
-        // ###################################################################
-        // ### valiating SMTP.SENDER configuratoin key
-        // ###################################################################
-        if (!smtpSender) {
-            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, CONFIG_FILE_KEY_SMTP_SENDER);
-        }
-
         this.config = {
-            version,
+            version: getVersion(FILE_VERSION),
             logger: {
-                level: loggerLevel,
+                level: 'debug',
             },
             report: {
-                type: reportType,
-                template: reportTemplate,
-                audience: reportAudience,
+                type: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_TYPE, KeyType.STRING),
+                template: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_TEMPLATE, KeyType.TEMPLATE_NAME),
+                audience: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_AUDIENCE, KeyType.EMAIL_LIST).split(','),
+            },
+            project: {
+                xmlReport: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_PROJECT_XML_REPORT, KeyType.FILE_PATH),
             },
             database: {
-                host: databaseHost,
-                port: databasePort,
-                username: databaseUsername,
-                password: databasePassword,
+                host: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_DATABASE_HOST, KeyType.HOST),
+                port: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_DATABASE_PORT, KeyType.INTEGER),
+                username: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_DATABASE_USERNAME, KeyType.STRING),
+                password: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_DATABASE_PASSWORD, KeyType.STRING),
             },
             smtp: {
-                host: smtpHost,
-                port: smtpPort,
-                username: smtpUsername,
-                password: smtpPassword,
-                sender: smtpSender,
+                host: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_SMTP_HOST, KeyType.HOST),
+                port: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_SMTP_PORT, KeyType.INTEGER),
+                username: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_SMTP_USERNAME, KeyType.STRING),
+                password: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_SMTP_PASSWORD, KeyType.STRING),
+                sender: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_SMTP_SENDER, KeyType.EMAIL),
             },
             toString: () =>
                 JSON.stringify({
@@ -126,5 +94,71 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
 
     public getConfig(): IConfigurationObject {
         return this.config;
+    }
+
+    private parceValue(origin: Origin, key: string, keyType: KeyType, required: boolean = true): string {
+        let val = origin === Origin.CONFIG ? String(this.props.get(key)) : String(this.args[key]);
+
+        if (isEmpty(val) && required) {
+            throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, key);
+        }
+
+        switch (keyType) {
+            case KeyType.HOST:
+                if (!isFqdn(val) && !isIPV4(val)) {
+                    throw new ConfigurationError(
+                        // @ts-ignore
+                        ConfigurationError[`INVALID_${origin}`],
+                        key,
+                        origin === Origin.ARGUMENTS ? 'invalid host' : undefined
+                    );
+                }
+                break;
+            case KeyType.EMAIL:
+                if (!isEmail(val)) {
+                    // @ts-ignore
+                    throw new ConfigurationError(
+                        // @ts-ignore
+                        ConfigurationError[`INVALID_${origin}`],
+                        key,
+                        origin === Origin.ARGUMENTS ? 'invalid email' : undefined
+                    );
+                }
+                break;
+            case KeyType.INTEGER:
+                if (!isInteger(val)) {
+                    throw new ConfigurationError(
+                        // @ts-ignore
+                        ConfigurationError[`INVALID_${origin}`],
+                        key,
+                        origin === Origin.ARGUMENTS ? 'invalid integer' : undefined
+                    );
+                }
+                break;
+            case KeyType.EMAIL_LIST:
+                val.split(',').forEach(item => {
+                    if (!isEmail(item)) {
+                        throw new ConfigurationError(
+                            // @ts-ignore
+                            ConfigurationError[`INVALID_${origin}`],
+                            key,
+                            origin === Origin.ARGUMENTS ? 'invalid email list' : undefined
+                        );
+                    }
+                });
+                break;
+            case KeyType.FILE_PATH:
+                if (!isFile(val)) {
+                    throw new ConfigurationError(
+                        // @ts-ignore
+                        ConfigurationError[`INVALID_${origin}`],
+                        key,
+                        origin === Origin.ARGUMENTS ? 'invalid file' : undefined
+                    );
+                }
+                break;
+        }
+
+        return val;
     }
 }

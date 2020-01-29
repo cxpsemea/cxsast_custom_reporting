@@ -15,7 +15,10 @@ export interface IConfigurationObject {
     report: {
         type: string;
         template: string;
-        audience: string;
+        audience: string[];
+    };
+    project?: {
+        xmlReport?: string;
     };
     database: {
         host: string;
