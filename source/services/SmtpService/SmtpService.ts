@@ -1,7 +1,7 @@
 import SmtpServiceImpl from './SmtpServiceImpl';
 
 export interface ISmtpService {
-    sendEmail(template: string, audience: string[]): Promise<void>;
+    sendEmail(subject: string, audience: string[], body: string): Promise<void>;
 }
 
 let instance: ISmtpService;

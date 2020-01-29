@@ -25,13 +25,7 @@ async function main() {
 
         const renderedTemplate = await html.renderTemplate(reportData, cnf.report.template);
 
-        console.log();
-        console.log();
-        console.log(renderedTemplate);
-        console.log();
-        console.log();
-
-        await smtp.sendEmail(renderedTemplate, cnf.report.audience.split(','));
+        await smtp.sendEmail('checkmarx report', cnf.report.audience.split(','), renderedTemplate);
 
         log.info('finished');
     } catch (e) {
