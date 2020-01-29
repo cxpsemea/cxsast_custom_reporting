@@ -24,6 +24,9 @@ export default class DataServiceImpl implements IDataService {
             server: cnf.database.host,
             port: parseInt(cnf.database.port),
             database: 'CxDB',
+            options: {
+                enableArithAbort: true,
+            },
         });
     }
 

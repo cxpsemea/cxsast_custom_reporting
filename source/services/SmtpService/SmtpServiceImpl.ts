@@ -54,7 +54,7 @@ export default class SmtpServiceImpl implements ISmtpService {
 
             await this.transport.sendMail(mailOpts);
 
-            log.info('finished sending email');
+            log.info('finished sending email to "%s"', cnf.report.audience.join(','));
 
             return Promise.resolve();
         } catch (e) {

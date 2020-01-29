@@ -21,6 +21,7 @@ import {
     DEFAULT_FOLDER_TEMPLATES,
     DEFAULT_REPORT_TYPE,
     REPORT_TYPE_SCANSUMMARY_DEFAULT_TEMPLATE,
+    CONFIG_FILE_KEY_LOGGER_LEVEL,
 } from '../../common/Constants';
 import { isFile, isEmpty, isEmail, isFqdn, isIPV4, isInteger } from '../../common/Validator';
 import { readFile } from '../../common/Utilities';
@@ -64,7 +65,7 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
         this.config = {
             version: getVersion(FILE_VERSION),
             logger: {
-                level: 'debug',
+                level: this.parceValue(Origin.CONFIG, CONFIG_FILE_KEY_LOGGER_LEVEL, KeyType.STRING),
             },
             report: {
                 type: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_TYPE, KeyType.STRING),
@@ -102,6 +103,10 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
 
     private parceValue(origin: Origin, key: string, keyType: KeyType, required: boolean = true): string {
         let val = origin === Origin.CONFIG ? String(this.props.get(key)) : String(this.args[key]);
+
+        if (isEmpty(val) && key === CONFIG_FILE_KEY_LOGGER_LEVEL) {
+            val = 'info';
+        }
 
         if (isEmpty(val) && key === CONFIG_ARGS_REPORT_TYPE) {
             val = DEFAULT_REPORT_TYPE;

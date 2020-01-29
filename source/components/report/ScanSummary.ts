@@ -1,8 +1,42 @@
 import DataService from '../../services/DataService/DataService';
 import { IScanSummaryData } from './IScanSummaryData';
-import { LoggerService } from '../../services';
+import { LoggerService, XmlParsingService, ConfigurationService } from '../../services';
+import { format as formatString } from 'util';
 
+const cnf = ConfigurationService.getConfig();
 const log = LoggerService.getLogger('ScanSummary');
+
+const RESPONSE_TEMPLATE: IScanSummaryData = {
+    productVersion: '',
+    projectId: 0,
+    projectName: '',
+    scanId: 0,
+    scanType: 'FullScan',
+    scanRisk: 0,
+    scanLoc: 0,
+    scanLocFailed: 0,
+    scanFiles: 0,
+    scanPreset: '',
+    scanTotals: {
+        bySeverity: {
+            high: 0,
+            medium: 0,
+            low: 0,
+            info: 0,
+        },
+        byStatus: {
+            new: 0,
+            fixed: 0,
+            recurrent: 0,
+        },
+    },
+    scanResultStatus: {
+        new: { high: 0, medium: 0, low: 0, info: 0 },
+        fixed: { high: 0, medium: 0, low: 0, info: 0 },
+        recurrent: { high: 0, medium: 0, low: 0, info: 0 },
+        total: { high: 0, medium: 0, low: 0, info: 0 },
+    },
+};
 
 const QUERY_1 = `
 SELECT 
@@ -21,8 +55,7 @@ FROM
 		INNER JOIN [CxDB].[dbo].[TaskScans] Scan on Scan.ProjectId = Project.Id
 		INNER JOIN [CxDB].[dbo].[TaskScanEnvironment] ScanDetails on ScanDetails.ScanId = Scan.Id
 WHERE
-		Project.id = 31
-    AND Scan.Id = 1000091;
+	Scan.Id = %s;
 `;
 
 const QUERY_2 = `
@@ -36,8 +69,7 @@ FROM
         INNER JOIN [CxDB].[dbo].[ScanStatistics] ScanStatistics on ScanStatistics.ProjectId = Project.Id
         INNER JOIN  [CxDB].[dbo].[Query] Query on Query.QueryId = ScanStatistics.QueryId
 WHERE
-    Project.id = 31
-    AND ScanStatistics.ScanId = 1000091
+    ScanStatistics.ScanId = %s
 GROUP BY
     Query.Severity
 ORDER BY
@@ -45,57 +77,34 @@ ORDER BY
 `;
 
 const summaryReport = async (): Promise<IScanSummaryData> => {
-    let returnData: IScanSummaryData = {
-        productVersion: '',
-        projectId: 0,
-        projectName: '',
-        scanId: 0,
-        scanType: 'FullScan',
-        scanRisk: 0,
-        scanLoc: 0,
-        scanLocFailed: 0,
-        scanFiles: 0,
-        scanPreset: '',
-        scanTotals: {
-            bySeverity: {
-                high: 0,
-                medium: 0,
-                low: 0,
-                info: 0,
-            },
-            byStatus: {
-                new: 0,
-                fixed: 0,
-                recurrent: 0,
-            },
-        },
-        scanResultStatus: {
-            new: { high: 0, medium: 0, low: 0, info: 0 },
-            fixed: { high: 0, medium: 0, low: 0, info: 0 },
-            recurrent: { high: 0, medium: 0, low: 0, info: 0 },
-            total: { high: 0, medium: 0, low: 0, info: 0 },
-        },
-    };
+    let returnData: IScanSummaryData = { ...RESPONSE_TEMPLATE };
 
     const ds = DataService.getInstance();
+    const xml = XmlParsingService.getInstance();
+
+    if (!cnf.project || !cnf.project.xmlReport) {
+        // TODO: throw proper exception
+        throw new Error('missing cnf.project.xmlReport');
+    }
+
+    const scanId = await xml.fetchScanIdAndQuit(cnf.project.xmlReport);
 
     await ds.connect();
 
-    const scanSummaryQueryResult = (await ds.executeQuery(QUERY_1)) as any[];
+    const scanSummaryQueryResult = (await ds.executeQuery(formatString(QUERY_1, scanId))) as any[];
     log.debug('retrieved from database %j', scanSummaryQueryResult);
 
-    const scanTotalsQueryResult = (await ds.executeQuery(QUERY_2)) as any[];
+    if (!scanSummaryQueryResult.length) {
+        // TODO: throw proper exception
+        throw new Error(`Could not retrieve scan details for Scanid=${scanId}`);
+    }
+
+    const scanTotalsQueryResult = (await ds.executeQuery(formatString(QUERY_2, scanId))) as any[];
     log.debug('retrieved from database %j', scanTotalsQueryResult);
 
     await ds.disconnect();
 
     returnData = { ...returnData, ...scanSummaryQueryResult[0] };
-
-    // [
-    //     { severity: 'High', new: 28, fixed: 0, recurrent: 1 },
-    //     { severity: 'Medium', new: 28, fixed: 0, recurrent: 0 },
-    //     { severity: 'Low', new: 32, fixed: 0, recurrent: 6 },
-    // ];
 
     scanTotalsQueryResult.forEach((item: { severity: string; new: number; fixed: number; recurrent: number }) => {
         returnData.scanTotals.byStatus.new += item.new;
@@ -134,8 +143,8 @@ const summaryReport = async (): Promise<IScanSummaryData> => {
         }
     });
 
-    log.debug('returning %j', returnData);
-    log.info('finished retrieving data');
+    log.debug('fetched scan details %j', returnData);
+    log.info('finished retrieving data for scanId=%s projectName="%s"', scanId, returnData.projectName);
 
     return Promise.resolve(returnData);
 };
