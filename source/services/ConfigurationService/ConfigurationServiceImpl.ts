@@ -18,9 +18,13 @@ import {
     CONFIG_ARGS_REPORT_TEMPLATE,
     CONFIG_ARGS_REPORT_AUDIENCE,
     CONFIG_ARGS_PROJECT_XML_REPORT,
+    DEFAULT_FOLDER_TEMPLATES,
+    DEFAULT_REPORT_TYPE,
+    REPORT_TYPE_SCANSUMMARY_DEFAULT_TEMPLATE,
 } from '../../common/Constants';
 import { isFile, isEmpty, isEmail, isFqdn, isIPV4, isInteger } from '../../common/Validator';
 import { readFile } from '../../common/Utilities';
+import { resolve as resolvePath, join as joinPath } from 'path';
 
 enum Origin {
     CONFIG = 'CONFIG_KEY',
@@ -33,7 +37,7 @@ enum KeyType {
     EMAIL,
     EMAIL_LIST,
     STRING,
-    TEMPLATE_NAME,
+    TEMPLATE_PATH,
     FILE_PATH,
 }
 
@@ -64,7 +68,7 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
             },
             report: {
                 type: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_TYPE, KeyType.STRING),
-                template: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_TEMPLATE, KeyType.TEMPLATE_NAME),
+                template: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_TEMPLATE, KeyType.TEMPLATE_PATH),
                 audience: this.parceValue(Origin.ARGUMENTS, CONFIG_ARGS_REPORT_AUDIENCE, KeyType.EMAIL_LIST).split(','),
             },
             project: {
@@ -98,6 +102,14 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
 
     private parceValue(origin: Origin, key: string, keyType: KeyType, required: boolean = true): string {
         let val = origin === Origin.CONFIG ? String(this.props.get(key)) : String(this.args[key]);
+
+        if (isEmpty(val) && key === CONFIG_ARGS_REPORT_TYPE) {
+            val = DEFAULT_REPORT_TYPE;
+        }
+
+        if (isEmpty(val) && key === CONFIG_ARGS_REPORT_TEMPLATE) {
+            val = REPORT_TYPE_SCANSUMMARY_DEFAULT_TEMPLATE;
+        }
 
         if (isEmpty(val) && required) {
             throw new ConfigurationError(ConfigurationError.MISSING_CONFIG_KEY, key);
@@ -148,6 +160,18 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
                 });
                 break;
             case KeyType.FILE_PATH:
+                val = resolvePath(val);
+                if (!isFile(val)) {
+                    throw new ConfigurationError(
+                        // @ts-ignore
+                        ConfigurationError[`INVALID_${origin}`],
+                        key,
+                        origin === Origin.ARGUMENTS ? 'invalid file' : undefined
+                    );
+                }
+                break;
+            case KeyType.TEMPLATE_PATH:
+                val = resolvePath(joinPath(DEFAULT_FOLDER_TEMPLATES, `${val}.html`));
                 if (!isFile(val)) {
                     throw new ConfigurationError(
                         // @ts-ignore

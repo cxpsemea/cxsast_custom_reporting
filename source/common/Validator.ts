@@ -28,7 +28,7 @@ const isIPV4 = (val: string): boolean => {
 };
 
 const isEmpty = (_val: string): boolean => {
-    if (!_val) {
+    if (!_val || _val === 'undefined' || _val === 'null') {
         return true;
     }
 
