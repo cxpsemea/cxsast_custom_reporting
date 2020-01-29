@@ -13,19 +13,21 @@ async function main() {
         log.debug('initialized with %s', cnf.toString());
 
         let reportData: any;
+        let reportTitle: string;
 
         switch (cnf.report.type) {
             case REPORT_TYPE_SCAN_SUMMARY:
                 reportData = await summaryReport();
+                reportTitle = `Checkmarx: ScanSummary for "${reportData.projectName}"`;
                 log.debug('SummaryReport data is %j', reportData);
                 break;
             default:
                 throw new Error('not valid report type');
         }
 
-        const renderedTemplate = await html.renderTemplate(reportData, cnf.report.template);
+        const reportBody = await html.renderTemplate(reportData, cnf.report.template);
 
-        await smtp.sendEmail('checkmarx report', cnf.report.audience.split(','), renderedTemplate);
+        await smtp.sendEmail(reportTitle, cnf.report.audience.split(','), reportBody);
 
         log.info('finished');
     } catch (e) {
