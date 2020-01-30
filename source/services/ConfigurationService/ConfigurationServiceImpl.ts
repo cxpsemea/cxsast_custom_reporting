@@ -43,10 +43,12 @@ enum KeyType {
 }
 
 const getVersion = (_path: string): string => {
-    if (!isFile(_path)) {
-        throw new ConfigurationError(ConfigurationError.MISSING_VERSION);
-    }
-    return readFile(_path);
+    // if (!isFile(_path)) {
+    //     throw new ConfigurationError(ConfigurationError.MISSING_VERSION);
+    // }
+    // return readFile(_path);
+    // TODO: replace with a way to implement internal versioning
+    return 'NEXT';
 };
 
 export default class ConfigurationServiceImpl implements IConfigurationService {
