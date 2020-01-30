@@ -27,6 +27,6 @@ jobs:
       
       - name: release
         run: 
-          npm run release
+          npm run ci:release
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
