@@ -2,7 +2,7 @@
     "private": true,
     "license": "MIT",
     "name": "cxsast_custom_reporting",
-    "version": "0.0.0",
+    "version": "1.0.0-next.1",
     "author": "Marcelo Pereira <marcgp@gmail.com>",
     "contributors": [],
     "description": "A CxSAST satellite application that allows users to generate custom reporting",
