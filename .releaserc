@@ -1,0 +1,34 @@
+{
+    "branches": [
+        {"name": "master"},
+        {"name": "1.x",    "channel":"1.x",                         "range": "1.x"},
+        {"name": "pre/rc", "channel": "pre/rc", "prerelease": "rc"                },
+        {"name": "beta",   "channel": "beta",   "prerelease": "beta"              },
+        {"name": "next",   "channel": "next",   "prerelease": "next"              }
+    ],
+    "plugins": [
+        ["@semantic-release/commit-analyzer",{
+            "preset": "conventionalcommits",
+            "parserOpts": {
+                "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+            }
+        }],
+        "@semantic-release/release-notes-generator",
+        ["@semantic-release/npm", {
+            "npmPublish": false
+        }],
+        ["@semantic-release/changelog", {
+            "changelogFile": "CHANGELOG.md"
+        }],
+        ["@semantic-release/git", {
+            "assets": ["package.json", "CHANGELOG.md"]
+        }],
+        ["@semantic-release/exec", {
+            "publishCmd": "bash ./scripts/release.sh $npm_package_name ${nextRelease.version}"
+        }],
+        ["@semantic-release/github", {
+            "assets": [{"path": "dist/*.zip"}],
+            "successComment": ":information_source::information_source: **This ${issue.pull_request ? 'pull request' : 'issue'} has been fixed in [Release v${nextRelease.version}](${releases.filter(release => /github.com/i.test(release.url))[0].url})**"
+        }]
+    ]
+}

@@ -28,7 +28,8 @@
     },
     "scripts": {
         "dev": "nodemon --watch source --exec ts-node source/main.ts --projectXmlReport ./report.xml --reportAudience user01@test.com,user02@test.com",
-        "docs": "docsify serve ./docs"
+        "docs": "docsify serve ./docs",
+        "ci:release": "semantic-release --verbose"
     },
     "dependencies": {
         "handlebars": "4.7.2",

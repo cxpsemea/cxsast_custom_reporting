@@ -3,9 +3,9 @@ name: Release workflow
 on:
   push:
     branches:
-      - "master"
-      - "beta"
-      - "next"
+      - 'master'
+      - 'beta'
+      - 'next'
 
 jobs:
   build:
@@ -14,6 +14,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
 
       - name: prepare environment
-        run: echo SKIPPING
+        run: sudo apt-get update && sudo apt-get install -y zip pandoc
+      
+      - name: install & check dependencies
+        run: 
+          npm install
+      
+      - name: release
+        run: 
+          npm run release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
