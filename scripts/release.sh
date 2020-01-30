@@ -17,10 +17,14 @@ pandoc CHANGELOG.md -t plain -s -o ./dist/CHANGELOG.txt
 echo "     ==> Building"
 ./node_modules/.bin/tsc --project ./tsconfig.json
 ./node_modules/.bin/pkg --silent --targets node12-win-x64 build/main.js --output dist/${NAME}_v${VERSION}_win_x64.exe
-zip -rvj dist/${NAME}_v${VERSION}_win_x64.zip ./dist/LICENSE.txt
-zip -rvj dist/${NAME}_v${VERSION}_win_x64.zip ./dist/CHANGELOG.txt
-zip -rvj dist/${NAME}_v${VERSION}_win_x64.zip ./dist/README.txt
-zip -rvj dist/${NAME}_v${VERSION}_win_x64.zip ./dist/${NAME}_v${VERSION}_win_x64.exe
+cd ./dist
+zip -rvj ./${NAME}_v${VERSION}_win_x64.zip ./LICENSE.txt
+zip -rvj ./${NAME}_v${VERSION}_win_x64.zip ./CHANGELOG.txt
+zip -rvj ./${NAME}_v${VERSION}_win_x64.zip ./README.txt
+zip -rv  ./${NAME}_v${VERSION}_win_x64.zip ./config/config.example.ini
+zip -rv  ./${NAME}_v${VERSION}_win_x64.zip ./config/templates/ScanSummary.html
+zip -rvj ./${NAME}_v${VERSION}_win_x64.zip ./${NAME}_v${VERSION}_win_x64.exe
+cd ..
 
 echo "     ==> Cleaning"
 rm -rf ./dist/config
