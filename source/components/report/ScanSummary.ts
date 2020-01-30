@@ -30,6 +30,7 @@ const RESPONSE_TEMPLATE: IScanSummaryData = {
             fixed: 0,
             recurrent: 0,
         },
+        total: 0,
     },
     scanResultStatus: {
         new: { high: 0, medium: 0, low: 0, info: 0 },
@@ -137,6 +138,8 @@ const fetchData = async (scanId: number): Promise<any> => {
                     break;
             }
         });
+
+        returnData.scanTotals.total = returnData.scanTotals.byStatus.new + returnData.scanTotals.byStatus.recurrent;
 
         return returnData;
     } catch (error) {

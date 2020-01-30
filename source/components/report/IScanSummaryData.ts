@@ -28,6 +28,7 @@ export interface IScanSummaryData {
             fixed: number;
             recurrent: number;
         };
+        total: number;
     };
     scanResultStatus: {
         new: IScanResultStatusItem;
