@@ -1,3 +1,11 @@
+# [1.0.0-next.2](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.0.0-next.1...v1.0.0-next.2) (2020-01-30)
+
+
+### Bug Fixes
+
+* **#2:** add missing artifacts to released file ([8081f80](https://github.com/cxpsemea/cxsast_custom_reporting/commit/8081f80d272177f4c9a47c7080e9374d52a3edd9)), closes [#2](https://github.com/cxpsemea/cxsast_custom_reporting/issues/2)
+* **#3:** removed automatic versioning retrieving ([2efbd5c](https://github.com/cxpsemea/cxsast_custom_reporting/commit/2efbd5c8282163431f099d45304cb387c932acd3)), closes [#3](https://github.com/cxpsemea/cxsast_custom_reporting/issues/3)
+
 # 1.0.0-next.1 (2020-01-30)
 
 
