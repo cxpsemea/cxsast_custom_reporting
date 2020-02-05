@@ -1,82 +1,13 @@
+import { format as formatString } from 'util';
 import DataService from '../../services/DataService/DataService';
 import { IScanSummaryData } from './IScanSummaryData';
 import { LoggerService, XmlParsingService, ConfigurationService } from '../../services';
-import { format as formatString } from 'util';
+import { QUERY_PROJECT_DETAILS, QUERY_PROJECT_STATUS, RESPONSE_TEMPLATE } from './constants';
+import ScanSummaryError from './ScanSummaryError';
 
 const cnf = ConfigurationService.getConfig();
 const log = LoggerService.getLogger('ScanSummary');
 const xml = XmlParsingService.getInstance();
-
-const RESPONSE_TEMPLATE: IScanSummaryData = {
-    productVersion: '',
-    projectId: 0,
-    projectName: '',
-    scanId: 0,
-    scanType: 'FullScan',
-    scanRisk: 0,
-    scanLoc: 0,
-    scanLocFailed: 0,
-    scanFiles: 0,
-    scanPreset: '',
-    scanTotals: {
-        bySeverity: {
-            high: 0,
-            medium: 0,
-            low: 0,
-            info: 0,
-        },
-        byStatus: {
-            new: 0,
-            fixed: 0,
-            recurrent: 0,
-        },
-        total: 0,
-    },
-    scanResultStatus: {
-        new: { high: 0, medium: 0, low: 0, info: 0 },
-        fixed: { high: 0, medium: 0, low: 0, info: 0 },
-        recurrent: { high: 0, medium: 0, low: 0, info: 0 },
-        total: { high: 0, medium: 0, low: 0, info: 0 },
-    },
-};
-
-const QUERY_1 = `
-SELECT 
-	ScanDetails.ProductVersion as "productVersion",
-	CAST(Project.Id as int) as "projectId",
-	Project.Name as projectName,
-	CAST(Scan.Id as int) as "scanId",
-	(SELECT CASE ScanType WHEN 1 THEN 'Full Scan' END) as "scanType",
-	ScanDetails.PresetName as "scanPreset",
-	CAST(Scan.RiskLevel as int)  as "scanRisk",
-	CAST(ScanDetails.LOC as int) as "scanLoc",
-	CAST(ScanDetails.FailedLOC as int) as "scanLocFailed",
-	CAST(ScanDetails.FilesCount as int) "scanFiles"
-FROM 
-	[CxDB].[dbo].[Projects] Project
-		INNER JOIN [CxDB].[dbo].[TaskScans] Scan on Scan.ProjectId = Project.Id
-		INNER JOIN [CxDB].[dbo].[TaskScanEnvironment] ScanDetails on ScanDetails.ScanId = Scan.Id
-WHERE
-	Scan.Id = %s;
-`;
-
-const QUERY_2 = `
-SELECT
-    (SELECT CASE Query.Severity WHEN 3 THEN 'high' WHEN 2 THEN 'medium' WHEN 1 THEN 'low' WHEN 0 THEN 'info' END) as "severity",
-    SUM(ScanStatistics.NewResults) as "new",
-    SUM(ScanStatistics.ResolvedResults) as "fixed",
-    SUM(ScanStatistics.RecurrentResults) as "recurrent"
-FROM
-     [CxDB].[dbo].[Projects] Project
-        INNER JOIN [CxDB].[dbo].[ScanStatistics] ScanStatistics on ScanStatistics.ProjectId = Project.Id
-        INNER JOIN  [CxDB].[dbo].[Query] Query on Query.QueryId = ScanStatistics.QueryId
-WHERE
-    ScanStatistics.ScanId = %s
-GROUP BY
-    Query.Severity
-ORDER BY
-    Query.Severity DESC;
-`;
 
 const timeout = (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -88,14 +19,13 @@ const fetchData = async (scanId: number): Promise<any> => {
     try {
         await ds.connect();
 
-        const scanSummaryQueryResult = (await ds.executeQuery(formatString(QUERY_1, scanId))) as any[];
+        const scanSummaryQueryResult = (await ds.executeQuery(formatString(QUERY_PROJECT_DETAILS, scanId))) as any[];
         log.debug('retrieved from database %j', scanSummaryQueryResult);
 
         if (!scanSummaryQueryResult.length) {
-            // TODO: throw proper exception
-            throw new Error(`Could not retrieve scan details for Scanid=${scanId}`);
+            throw new ScanSummaryError(ScanSummaryError.MISSING_SCAN_DETAILS, scanId);
         }
-        const scanTotalsQueryResult = (await ds.executeQuery(formatString(QUERY_2, scanId))) as any[];
+        const scanTotalsQueryResult = (await ds.executeQuery(formatString(QUERY_PROJECT_STATUS, scanId))) as any[];
         log.debug('retrieved from database %j', scanTotalsQueryResult);
 
         await ds.disconnect();
@@ -174,8 +104,7 @@ const fetchDataRetry = async (scanId: number, retries: number): Promise<any> => 
 
 const summaryReport = async (): Promise<any> => {
     if (!cnf.project || !cnf.project.xmlReport) {
-        // TODO: throw proper exception
-        throw new Error('missing cnf.project.xmlReport');
+        throw new ScanSummaryError(ScanSummaryError.MISSING_ARGUMENT_XMLREPORT);
     }
 
     const scanId = await xml.fetchScanIdAndQuit(cnf.project.xmlReport);

@@ -1,6 +1,6 @@
 import { ConfigurationService, HtmlRenderingService, LoggerService, SmtpService } from './services';
-import { summaryReport } from './components/report';
 import { REPORT_TYPE_SCANSUMMARY } from './common/Constants';
+import { summaryReport } from './components';
 
 const cnf = ConfigurationService.getConfig();
 const log = LoggerService.getLogger('main');

@@ -29,6 +29,7 @@
     "scripts": {
         "dev": "nodemon --watch source --exec ts-node source/main.ts --projectXmlReport ./report.xml --reportAudience user01@test.com,user02@test.com",
         "docs": "docsify serve ./docs",
+        "commit": "git-cz",
         "ci:release": "semantic-release --verbose"
     },
     "dependencies": {
