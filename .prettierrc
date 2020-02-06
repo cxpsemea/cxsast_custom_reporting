@@ -1,0 +1,32 @@
+{
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "singleQuote": true,
+    "printWidth": 140,
+    "overrides": [
+        {
+            "files": ".prettier",
+            "options": {
+                "tabWidth": 4
+            }
+        },
+        {
+            "files": ".releaserc",
+            "options": {
+                "tabWidth": 4
+            }
+        },
+        {
+            "files": "*.json",
+            "options": {
+                "tabWidth": 4
+            }
+        },
+        {
+            "files": "*.yaml",
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
+}
