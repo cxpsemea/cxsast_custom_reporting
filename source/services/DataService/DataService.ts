@@ -4,6 +4,7 @@ export interface IDataService {
     connect(): Promise<void>;
     disconnect(): Promise<void>;
     executeQuery(query: string): Promise<any>;
+    executeGetCompareScansSummary(newScan: number, oldScan: number): Promise<any>;
 }
 
 let instance: IDataService;

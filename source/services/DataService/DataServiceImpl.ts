@@ -54,4 +54,38 @@ export default class DataServiceImpl implements IDataService {
         }
         return Promise.resolve([]);
     }
+
+    public async executeGetCompareScansSummary(newScan: number, oldScan: number): Promise<any[]> {
+        console.debug('executing procedure');
+
+        const severityMapping: Map<number, string> = new Map();
+        severityMapping.set(3, 'high');
+        severityMapping.set(2, 'medium');
+        severityMapping.set(1, 'low');
+
+        const result = await this.connection
+            .request()
+            .input('NewScanId', mssql.Int, newScan)
+            .input('OldScanId', mssql.Int, oldScan)
+            .input('IncludeNotExploitable', mssql.Int, 0)
+            .input('GroupBySeverity', mssql.Int, 1)
+            .input('GroupByState', mssql.Int, 0)
+            .input('GroupByQuery', mssql.Int, 0)
+            .execute('GetCompareScansSummary');
+
+        if (result && result.recordset.length > 0) {
+            const response = [];
+            for (const item of result.recordset) {
+                response.push({
+                    severity: severityMapping.get(item.Severity),
+                    new: item.New,
+                    fixed: item.Resolved,
+                    recurrent: item.Recurrent,
+                });
+            }
+            return Promise.resolve(response);
+        }
+
+        return Promise.resolve([]);
+    }
 }

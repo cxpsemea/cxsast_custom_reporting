@@ -25,7 +25,8 @@ const fetchData = async (scanId: number): Promise<any> => {
         if (!scanSummaryQueryResult.length) {
             throw new ScanSummaryError(ScanSummaryError.MISSING_SCAN_DETAILS, scanId);
         }
-        const scanTotalsQueryResult = (await ds.executeQuery(formatString(QUERY_PROJECT_STATUS, scanId))) as any[];
+        // const scanTotalsQueryResult = (await ds.executeQuery(formatString(QUERY_PROJECT_STATUS, scanId))) as any[];
+        const scanTotalsQueryResult = (await ds.executeGetCompareScansSummary(scanId as number, scanId as number)) as any[];
         log.debug('retrieved from database %j', scanTotalsQueryResult);
 
         await ds.disconnect();
