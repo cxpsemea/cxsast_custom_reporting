@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.0.0...v1.0.1) (2020-03-07)
+
+
+### Bug Fixes
+
+* **#13:** fix sincronization with project state ([0788cc8](https://github.com/cxpsemea/cxsast_custom_reporting/commit/0788cc8def8c5858cf87a03161f78bed0083e72e))
+
 # 1.0.0 (2020-02-06)
 
 
