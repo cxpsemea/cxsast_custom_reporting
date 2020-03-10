@@ -2,6 +2,7 @@ import XmlParsingServiceImpl from './XmlParsingServiceImpl';
 
 export interface IXmlParsingService {
     fetchScanIdAndQuit(xmlReportPath: string): Promise<number>;
+    fetchProjectIdAndQuit(xmlReportPath: string): Promise<number>;
 }
 
 let instance: IXmlParsingService;

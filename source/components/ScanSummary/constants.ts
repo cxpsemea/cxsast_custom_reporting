@@ -38,6 +38,20 @@ ORDER BY
     Query.Severity DESC;
 `;
 
+export const QUERY_PREVIOUS_SCAN_ID = `
+SELECT
+	  Id as scanId
+FROM 
+	  [CxDB].[dbo].[TaskScans]
+WHERE 
+    ProjectId = %s
+    AND Id <= %s
+ORDER BY 
+  	Id DESC
+OFFSET 1 ROWS
+FETCH NEXT 1 ROW ONLY
+`;
+
 export const RESPONSE_TEMPLATE: IScanSummaryData = {
     productVersion: '',
     projectId: 0,

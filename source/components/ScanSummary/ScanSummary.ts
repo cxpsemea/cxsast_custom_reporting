@@ -1,8 +1,7 @@
 import { format as formatString } from 'util';
+import { ConfigurationService, LoggerService, XmlParsingService } from '../../services';
 import DataService from '../../services/DataService/DataService';
-import { IScanSummaryData } from './IScanSummaryData';
-import { LoggerService, XmlParsingService, ConfigurationService } from '../../services';
-import { QUERY_PROJECT_DETAILS, QUERY_PROJECT_STATUS, RESPONSE_TEMPLATE } from './constants';
+import { QUERY_PREVIOUS_SCAN_ID, QUERY_PROJECT_DETAILS, RESPONSE_TEMPLATE } from './constants';
 import ScanSummaryError from './ScanSummaryError';
 
 const cnf = ConfigurationService.getConfig();
@@ -13,7 +12,7 @@ const timeout = (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-const fetchData = async (scanId: number): Promise<any> => {
+const fetchData = async (projectId: number, scanId: number): Promise<any> => {
     const ds = DataService.getInstance();
 
     try {
@@ -25,8 +24,12 @@ const fetchData = async (scanId: number): Promise<any> => {
         if (!scanSummaryQueryResult.length) {
             throw new ScanSummaryError(ScanSummaryError.MISSING_SCAN_DETAILS, scanId);
         }
-        // const scanTotalsQueryResult = (await ds.executeQuery(formatString(QUERY_PROJECT_STATUS, scanId))) as any[];
-        const scanTotalsQueryResult = (await ds.executeGetCompareScansSummary(scanId as number, scanId as number)) as any[];
+
+        const previousScanIdQueryResult = (await ds.executeQuery(formatString(QUERY_PREVIOUS_SCAN_ID, projectId, scanId))) as any[];
+        const previousScanId: number = previousScanIdQueryResult.length ? previousScanIdQueryResult[0].scanId : scanId;
+        log.debug('retrieved previous scan id from database %s', previousScanId);
+
+        const scanTotalsQueryResult = (await ds.executeGetCompareScansSummary(scanId as number, previousScanId as number)) as any[];
         log.debug('retrieved from database %j', scanTotalsQueryResult);
 
         await ds.disconnect();
@@ -78,24 +81,22 @@ const fetchData = async (scanId: number): Promise<any> => {
     }
 };
 
-const fetchDataRetry = async (scanId: number, retries: number): Promise<any> => {
+const fetchDataRetry = async (projectId: number, scanId: number, retries: number): Promise<any> => {
     try {
         if (retries >= 0) {
-            log.info('Feching data for scanId=%s attempt #%s', scanId, retries);
-            const scanData = await fetchData(scanId);
+            log.info('Feching data for projectId=%s scanId=%s attempt #%s', projectId, scanId, retries);
+            const scanData = await fetchData(projectId, scanId);
             log.debug('Feching data for scanId=%s attempt #%s returned %j', scanId, retries, scanData);
             if (!scanData) {
                 await timeout(2000);
-                return await fetchDataRetry(scanId, retries - 1);
+                return await fetchDataRetry(projectId, scanId, retries - 1);
             }
             return scanData;
-        } else {
-            throw Error('ABORTING');
         }
     } catch (e) {
         if (retries > 0) {
             await timeout(2000);
-            return await fetchDataRetry(scanId, retries - 1);
+            return await fetchDataRetry(projectId, scanId, retries - 1);
         } else {
             log.error('Could not retrieve data for scanId=%s after several attempts', scanId);
             return undefined;
@@ -109,11 +110,12 @@ const summaryReport = async (): Promise<any> => {
     }
 
     const scanId = await xml.fetchScanIdAndQuit(cnf.project.xmlReport);
-    const scanData = await fetchDataRetry(scanId, 4);
+    const projectId = await xml.fetchProjectIdAndQuit(cnf.project.xmlReport);
+    const scanData = await fetchDataRetry(projectId, scanId, 4);
 
     log.debug('fetched scan details %j', scanData);
     if (scanData) {
-        log.info('finished retrieving data for scanId=%s projectName="%s"', scanId, scanData.projectName);
+        log.info('finished retrieving data for projectId=%s scanId=%s projectName="%s"', projectId, scanId, scanData.projectName);
     }
 
     return Promise.resolve(scanData);
