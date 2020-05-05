@@ -1,7 +1,17 @@
-import { ConfigurationService } from './ConfigurationService';
-import { LoggerService } from './LoggerService';
-import { SmtpService } from './SmtpService';
-import { HtmlRenderingService } from './HtmlRenderingService';
-import { XmlParsingService } from './XmlParsingService';
+import { ConfigurationService } from './ConfigurationService'
+import { ArgumentsService } from './ArgumentsService'
+import { LoggerService } from './LoggerService'
+import { SmtpService } from './SmtpService'
+import { HtmlRenderingService } from './HtmlRenderingService'
+import { XmlParsingService } from './XmlParsingService'
+import { PdfService } from './PdfService'
 
-export { ConfigurationService, HtmlRenderingService, LoggerService, SmtpService, XmlParsingService };
+export {
+  ArgumentsService,
+  HtmlRenderingService,
+  LoggerService,
+  XmlParsingService,
+  ConfigurationService,
+  SmtpService,
+  PdfService,
+}
