@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.0.2...v1.1.0) (2020-05-05)
+
+
+### Features
+
+* **consolidated report:** add consolidated report type ([a81971b](https://github.com/cxpsemea/cxsast_custom_reporting/commit/a81971bdc79aad6476727bbc8d933b87e2fd067b))
+
 ## [1.0.2](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.0.1...v1.0.2) (2020-03-10)
 
 
