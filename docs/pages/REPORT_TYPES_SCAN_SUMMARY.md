@@ -70,7 +70,7 @@ The ScanSummary exposes the following data structure to the HtmlRenderingService
             <td colspan="2"><code>scanLoc</code></td>
             <td><code>number</code></td>
             <td><code>M</code></td>
-            <td>The number of scaned lines of code</td>
+            <td>The number of scanned lines of code</td>
         </tr>
         <tr>
             <td colspan="2"><code>scanLocFailed</code></td>
@@ -203,7 +203,7 @@ The ScanSummary exposes the following data structure to the HtmlRenderingService
 
 ### IScanResultsByStatus
 
-The folloing interface represents scan resuls agregated by status.
+The following interface represents scan results aggregated by status.
 
 <table>
     <thead>

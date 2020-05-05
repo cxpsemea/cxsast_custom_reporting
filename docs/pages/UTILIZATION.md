@@ -14,7 +14,7 @@ The list of all arguments that are available be passed when executing the the `.
 | `reportTemplate`     | _O_ | `ScanSummary` or `Consolidated` | the name of the html file inside the `config/templates` folder that will be used to send email or generate the pdf report `ex. otherConsolidated`                                       |
 | `reportAudience`     | _O_ |                                 | a comma delimited list of emails that should receive the report                                                                                                                         |
 | `projectXmlReport`   | _M_ |                                 | the path (relative to the script root) where the xml file generated on CxSAST is located. Only required if `reportType` is `scanSummary`                                                |
-| `projectNamePattern` | _M_ |                                 | a sql 'like' wildcard the will be used to select projects when `reportType` is `consolidated` . See the [Consolidated report type page](./REPORT_TYPES_CONSOLIDATED.md) to more details |
+| `projectNamePattern` | _M_ |                                 | a sql 'like' wildcard the will be used to select projects when `reportType` is `consolidated` . See the [Consolidated report type page](/pages/REPORT_TYPES_CONSOLIDATED.md) to more details |
 | `projectName`        | _M_ |                                 | the name that will be displayed on the report title                                                                                                                                     |
 
 So the full command will look like this:
@@ -23,4 +23,4 @@ So the full command will look like this:
 .\cxsast_custom_reporting_v{latestVersion}_win_x64.exe --reportType consolidated --projectName "Consolidated Test" --projectNamePattern ReportTesting% --reportAudience "user01@test.com,user02@test.com"
 ```
 
-See [Report Types](REPORT_TYPES) page for more details
+See [Report Types](/pages/REPORT_TYPES) page for more details
