@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.1.0...v1.2.0) (2020-05-05)
+
+
+### Features
+
+* **pdf report:** add a pdf report generator as an output option ([b69665a](https://github.com/cxpsemea/cxsast_custom_reporting/commit/b69665ac8d16023b342e16a7313264eb2035d61c))
+
 # [1.1.0](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.0.2...v1.1.0) (2020-05-05)
 
 
