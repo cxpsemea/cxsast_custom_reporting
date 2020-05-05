@@ -23,6 +23,7 @@ zip -rvj ./${NAME}_v${VERSION}_win_x64.zip ./CHANGELOG.txt
 zip -rvj ./${NAME}_v${VERSION}_win_x64.zip ./README.txt
 zip -rv  ./${NAME}_v${VERSION}_win_x64.zip ./config/config.example.ini
 zip -rv  ./${NAME}_v${VERSION}_win_x64.zip ./config/templates/ScanSummary.html
+zip -rv  ./${NAME}_v${VERSION}_win_x64.zip ./config/templates/Consolidated.html
 zip -rvj ./${NAME}_v${VERSION}_win_x64.zip ./${NAME}_v${VERSION}_win_x64.exe
 cd ..
 
