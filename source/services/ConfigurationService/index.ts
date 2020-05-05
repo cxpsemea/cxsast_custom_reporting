@@ -1,3 +1,3 @@
-import ConfigurationService from './ConfigurationService';
+import ConfigurationService from './ConfigurationService'
 
-export { ConfigurationService };
+export { ConfigurationService }

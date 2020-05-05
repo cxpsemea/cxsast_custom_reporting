@@ -1,0 +1,385 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-text padding="0" />
+      <mj-section padding-left="40px" padding-right="40px" background-color="#fff" />
+      <mj-all font-family="Tahoma, Geneva, sans-serif" />
+    </mj-attributes>
+    <mj-style>
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+        }
+      }
+    </mj-style>
+  </mj-head>
+
+  <mj-body background-color="#d6dde5" width="1024px" padding="20px 0 80px">
+    <mj-section padding-top="50px">
+      <mj-column>
+        <mj-include path="./partials/checkmarx-logo.mjml" />
+      </mj-column>
+      <mj-column>
+        <mj-text align="right">
+          <p>{{generatedAt}}</p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#fff" padding="40px 0 65px">
+      <mj-column padding="10px 0">
+        <mj-text align="center" font-size="24px" font-weight="bold" padding-top="0">
+          Here is your scans report for the "{{appName}}" application
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section padding="0 0 50px" background-color="#fff">
+      <mj-group>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="18px">
+            Overall Risk Score
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="24px" font-weight="bold">
+            {{combinedResults.scanRisk}}
+          </mj-text>
+        </mj-column>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="18px">
+            New Issues
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="24px" font-weight="bold">
+            {{combinedResults.byStatus.new}}
+          </mj-text>
+        </mj-column>
+        <mj-column>
+          <mj-text align="center" padding="0 0 10px" font-size="18px">
+            Recurrent Issues
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="24px" font-weight="bold">
+            {{combinedResults.byStatus.recurrent}}
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+
+    <mj-section padding="0 0 50px" background-color="#fff">
+      <mj-group>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="16px">
+            #of High Vulnerabilities
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="18px" font-weight="bold">
+            {{combinedResults.bySeverity.high}}
+          </mj-text>
+        </mj-column>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="16px">
+            #of Medium Vulnerabilities
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="18px" font-weight="bold">
+            {{combinedResults.bySeverity.medium}}
+          </mj-text>
+        </mj-column>
+        <mj-column>
+          <mj-text align="center" padding="0 0 10px" font-size="16px">
+            #of Low Vulnerabilities
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="18px" font-weight="bold">
+            {{combinedResults.bySeverity.low}}
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+
+    <mj-section padding="0" background-color="#fff">
+      <mj-group>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            To verify
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="16px" font-weight="bold">
+            {{combinedResults.byState.toVerify}}
+          </mj-text>
+        </mj-column>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            Urgent
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="16px" font-weight="bold">
+            {{combinedResults.byState.urgent}}
+          </mj-text>
+        </mj-column>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            Confirmed
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="16px" font-weight="bold">
+            {{combinedResults.byState.confirmed}}
+          </mj-text>
+        </mj-column>
+        <mj-column border-right="1px solid black">
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            Not Exploitable
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="16px" font-weight="bold">
+            {{combinedResults.byState.notExploitable}}
+          </mj-text>
+        </mj-column>
+        <mj-column>
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            Proposed Not Exploitable
+          </mj-text>
+          <mj-text align="center" padding="10px 0 0" font-size="16px" font-weight="bold">
+            {{combinedResults.byState.proposedNotExploitable}}
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+
+    <mj-section padding="50px 0 0" background-color="#fff">
+      <mj-group>
+        <mj-column>
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            Total LOC: {{combinedResults.scanLoc}}
+          </mj-text>
+        </mj-column>
+        <mj-column>
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            Scanned Files: {{combinedResults.scanFiles}}
+          </mj-text>
+        </mj-column>
+        <mj-column>
+          <mj-text align="center" padding="0 0 10px" font-size="14px">
+            Scanned Projects: {{combinedResults.scanProjects}}
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+
+    <mj-section>
+      <mj-column padding="50px 0 0">
+        <mj-text font-size="18px" font-weight="bold" padding-top="0">
+          1. Overall scan results by project and vulnerability status
+        </mj-text>
+        <mj-text font-size="16px" padding-top="10px" line-height="22px">
+          The following table shows the relation of the new/recurrent issues identified during the last scan for each project that is part of the "{{appName}}" application.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column padding="0">
+        <mj-table container-background-color="#F6F6F6" cellpadding="3" padding="0">
+          <tr align="center" style="background-color: #1F282A; height:30px; color:#fff">
+            <th style="border-right: 1px solid #fff">Project</th>
+            <th style="border-right: 1px solid #fff">Total</th>
+            <th style="border-right: 1px solid #fff">New Issues</th>
+            <th>Recurrent Issues</th>
+          </tr>
+          <mj-raw>
+            {{#each scans}}
+          </mj-raw>
+          <tr align="center" style="border-bottom: 1px solid #fff; line-height: 40px">
+            <td>{{projectName}} ({{id}} - {{openedAt}})</td>
+            <td>{{scanTotals.total}}</td>
+            <td>{{scanTotals.byStatus.new}}</td>
+            <td>{{scanTotals.byStatus.recurrent}}</td>
+          </tr>
+          <mj-raw>
+            {{/each}}
+          </mj-raw>
+
+          <tr align="center" style="line-height: 30px">
+            <td><b>Total</b></td>
+            <td>{{combinedResults.total}}</td>
+            <td>{{combinedResults.byStatus.new}}</td>
+            <td>{{combinedResults.byStatus.recurrent}}</td>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column padding="50px 0 0">
+        <mj-text font-size="18px" font-weight="bold" padding-top="0">
+          2. Overall scan results by project and vulnerability severity
+        </mj-text>
+        <mj-text font-size="16px" padding-top="10px" line-height="22px">
+          The following table shows the amount of high, medium and low vulnerabilities, in each project related to the "{{appName}}" application.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column padding="0">
+        <mj-table container-background-color="#F6F6F6" cellpadding="3" padding="0">
+          <tr align="center" style="background-color: #1F282A; height:30px; color:#fff">
+            <th style="border-right: 1px solid #fff">Project</th>
+            <th style="border-right: 1px solid #fff">Total</th>
+            <th style="border-right: 1px solid #fff">High</th>
+            <th style="border-right: 1px solid #fff">Medium</th>
+            <th>Low</th>
+          </tr>
+          <mj-raw>
+            {{#each scans}}
+          </mj-raw>
+          <tr align="center" style="border-bottom: 1px solid #fff; line-height: 40px">
+            <td>{{projectName}} ({{id}} - {{openedAt}})</td>
+            <td>{{scanTotals.total}}</td>
+            <td>{{scanTotals.bySeverity.high}}</td>
+            <td>{{scanTotals.bySeverity.medium}}</td>
+            <td>{{scanTotals.bySeverity.low}}</td>
+          </tr>
+          <mj-raw>
+            {{/each}}
+          </mj-raw>
+
+          <tr align="center" style="line-height: 30px">
+            <td><b>Total</b></td>
+            <td>{{combinedResults.total}}</td>
+            <td>{{combinedResults.bySeverity.high}}</td>
+            <td>{{combinedResults.bySeverity.medium}}</td>
+            <td>{{combinedResults.bySeverity.low}}</td>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column padding="50px 0 0">
+        <mj-text font-size="18px" font-weight="bold" padding-top="0">
+          3. Overall scan results by project and result state
+        </mj-text>
+        <mj-text font-size="16px" padding-top="10px" line-height="22px">
+          The following tables show the amount of results that were marked with one of the available states on Checkmarx platform. To provide easier visualization, each table represents a single project that is related to the "{{appName}}" application.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-raw>
+      {{#each scans}}
+    </mj-raw>
+
+    <mj-section>
+      <mj-column padding="0">
+        <mj-text font-size="14px" padding-top="0" font-weight="bold">
+          {{projectName}} ({{id}} - {{openedAt}})
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column padding="0">
+        <mj-table container-background-color="#F6F6F6" cellpadding="3" padding="0">
+          <tr align="center" style="background-color: #1F282A; height:30px; color:#fff">
+            <th style="border-right: 1px solid #fff">Severity</th>
+            <th style="border-right: 1px solid #fff">Totals</th>
+            <th style="border-right: 1px solid #fff">To Verify</th>
+            <th style="border-right: 1px solid #fff">Confirmed</th>
+            <th style="border-right: 1px solid #fff">Urgent</th>
+            <th style="border-right: 1px solid #fff">N/Exploitable</th>
+            <th>P/N/Exploitable</th>
+          </tr>
+
+          <tr align="center" style="border-bottom: 1px solid #fff; line-height: 40px">
+            <td>High</td>
+            <td>{{scanTotals.severityTotalsWithNotExploitable.high}}</td>
+            <td>{{scanTotals.stateBySeverity.high.toVerify}}</td>
+            <td>{{scanTotals.stateBySeverity.high.confirmed}}</td>
+            <td>{{scanTotals.stateBySeverity.high.urgent}}</td>
+            <td>{{scanTotals.stateBySeverity.high.notExploitable}}</td>
+            <td>{{scanTotals.stateBySeverity.high.proposedNotExploitable}}</td>
+          </tr>
+
+          <tr align="center" style="border-bottom: 1px solid #fff; line-height: 40px">
+            <td>Medium</td>
+            <td>{{scanTotals.severityTotalsWithNotExploitable.medium}}</td>
+            <td>{{scanTotals.stateBySeverity.medium.toVerify}}</td>
+            <td>{{scanTotals.stateBySeverity.medium.confirmed}}</td>
+            <td>{{scanTotals.stateBySeverity.medium.urgent}}</td>
+            <td>{{scanTotals.stateBySeverity.medium.notExploitable}}</td>
+            <td>{{scanTotals.stateBySeverity.medium.proposedNotExploitable}}</td>
+          </tr>
+
+          <tr align="center" style="border-bottom: 1px solid #fff; line-height: 40px">
+            <td>Low</td>
+            <td>{{scanTotals.severityTotalsWithNotExploitable.low}}</td>
+            <td>{{scanTotals.stateBySeverity.low.toVerify}}</td>
+            <td>{{scanTotals.stateBySeverity.low.confirmed}}</td>
+            <td>{{scanTotals.stateBySeverity.low.urgent}}</td>
+            <td>{{scanTotals.stateBySeverity.low.notExploitable}}</td>
+            <td>{{scanTotals.stateBySeverity.low.proposedNotExploitable}}</td>
+          </tr>
+
+          <tr align="center" style="line-height: 40px;">
+            <td><b>Total</b></td>
+            <td>{{scanTotals.totalWithNotExploitable}}</td>
+            <td>{{scanTotals.byState.toVerify}}</td>
+            <td>{{scanTotals.byState.confirmed}}</td>
+            <td>{{scanTotals.byState.urgent}}</td>
+            <td>{{scanTotals.byState.notExploitable}}</td>
+            <td>{{scanTotals.byState.proposedNotExploitable}}</td>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+    <mj-raw>
+      {{/each}}
+    </mj-raw>
+
+    <mj-section>
+      <mj-column padding="50px 0 0">
+        <mj-text font-size="18px" font-weight="bold" padding-top="0">
+          4. Result summary
+        </mj-text>
+        <mj-text font-size="16px" padding-top="10px" line-height="22px">
+          The following table shows all the <b>unresolved</b> vulnerabilities found with the amount of occurrences and severity.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column padding="0">
+        <mj-table container-background-color="#F6F6F6" cellpadding="3" padding="0">
+          <tr align="center" style="background-color: #1F282A; height:30px; color:#fff">
+            <th style="border-right: 1px solid #fff">Vulnerability Type</th>
+            <th style="border-right: 1px solid #fff">Occurrences</th>
+            <th>Severity</th>
+          </tr>
+
+          <mj-raw>
+            {{#each combinedResults.vulnerabilities}}
+          </mj-raw>
+          <tr align="center" style="border-bottom: 1px solid #fff; line-height: 40px">
+            <td>{{name}}</td>
+            <td>{{occurrences}}</td>
+            <td>{{severityLabel}}</td>
+          </tr>
+          <mj-raw>
+            {{/each}}
+          </mj-raw>
+
+          <mj-raw>
+            {{#unless combinedResults.vulnerabilities}}
+          </mj-raw>
+          <tr align="center" style="border-bottom: 1px solid #fff; line-height: 40px">
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+          </tr>
+          <mj-raw>
+            {{/unless}}
+          </mj-raw>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column padding="0">
+        <mj-text align="center" font-size="12px">
+          Checkmarx | {{year}}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

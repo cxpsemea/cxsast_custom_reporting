@@ -1,3 +1,5 @@
-import { summaryReport } from './ScanSummary/ScanSummary';
+import { summaryReport } from './ScanSummary/ScanSummary'
+import { consolidatedReport } from './Consolidated/Consolidated'
 
-export { summaryReport };
+export { summaryReport }
+export { consolidatedReport }

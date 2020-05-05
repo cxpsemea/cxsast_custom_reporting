@@ -1,87 +1,99 @@
 {
-    "private": true,
-    "license": "MIT",
-    "name": "cxsast_custom_reporting",
-    "version": "1.0.2",
-    "author": "Marcelo Pereira <marcgp@gmail.com>",
-    "contributors": [],
-    "description": "A CxSAST satellite application that allows users to generate custom reporting",
-    "repository": "https://github.com/cxpsemea/cxsast_custom_reporting.git",
-    "bugs": "https://github.com/cxpsemea/cxsast_custom_reporting/issues",
-    "homepage": "https://github.com/cxpsemea/cxsast_custom_reporting#readme",
-    "keywords": [
-        "checkmarx",
-        "sast",
-        "report",
-        "scan",
-        "post-scan"
-    ],
-    "config": {
-        "commitizen": {
-            "path": "./node_modules/cz-conventional-changelog"
-        }
-    },
-    "husky": {
-        "hooks": {
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-        }
-    },
-    "scripts": {
-        "dev": "nodemon --watch source --exec ts-node source/main.ts --projectXmlReport ./report.xml --reportAudience user01@test.com,user02@test.com",
-        "docs": "docsify serve ./docs",
-        "commit": "git-cz",
-        "ci:release": "semantic-release --verbose"
-    },
-    "dependencies": {
-        "handlebars": "4.7.2",
-        "line-reader": "0.4.0",
-        "log4js": "6.1.0",
-        "mssql": "6.0.1",
-        "nodemailer": "6.4.2",
-        "parse-key-value": "1.0.0",
-        "properties-reader": "1.0.0",
-        "uuid": "3.4.0",
-        "validator": "12.1.0",
-        "yargs": "15.1.0"
-    },
-    "devDependencies": {
-        "@commitlint/cli": "8.2.0",
-        "@commitlint/config-conventional": "8.2.0",
-        "@semantic-release/changelog": "3.0.6",
-        "@semantic-release/commit-analyzer": "7.0.0-beta.7",
-        "@semantic-release/exec": "3.4.0-beta.10",
-        "@semantic-release/git": "7.1.0-beta.11",
-        "@semantic-release/github": "5.6.0-beta.7",
-        "@semantic-release/npm": "6.0.0-beta.9",
-        "@semantic-release/release-notes-generator": "7.3.5",
-        "@types/flat": "0.0.28",
-        "@types/fs-extra": "8.0.1",
-        "@types/jest": "24.0.25",
-        "@types/line-reader": "0.0.28",
-        "@types/mssql": "6.0.0",
-        "@types/node": "13.1.2",
-        "@types/nodemailer": "6.4.0",
-        "@types/properties-reader": "0.0.1",
-        "@types/uuid": "3.4.6",
-        "@types/validator": "12.0.1",
-        "@types/yargs": "15.0.2",
-        "commitizen": "4.0.3",
-        "conventional-changelog-conventionalcommits": "4.2.3",
-        "cz-conventional-changelog": "3.0.2",
-        "docsify-cli": "4.4.0",
-        "flat": "5.0.0",
-        "fs-extra": "8.1.0",
-        "husky": "3.1.0",
-        "jest": "24.9.0",
-        "nodemon": "2.0.2",
-        "pkg": "4.4.2",
-        "semantic-release": "16.0.0-beta.46",
-        "ts-jest": "24.2.0",
-        "ts-loader": "6.2.1",
-        "ts-node": "8.5.4",
-        "tslint": "5.20.1",
-        "tslint-config-prettier": "1.18.0",
-        "typedoc": "0.16.7",
-        "typescript": "3.7.4"
+  "private": true,
+  "license": "MIT",
+  "name": "cxsast_custom_reporting",
+  "version": "1.0.2",
+  "author": "Marcelo Pereira <marcgp@gmail.com>",
+  "contributors": [
+    "Hugo Mota <hugo.dpmota@gmail.com>"
+  ],
+  "description": "A CxSAST satellite application that allows users to generate custom reporting",
+  "repository": "https://github.com/cxpsemea/cxsast_custom_reporting.git",
+  "bugs": "https://github.com/cxpsemea/cxsast_custom_reporting/issues",
+  "homepage": "https://github.com/cxpsemea/cxsast_custom_reporting#readme",
+  "keywords": [
+    "checkmarx",
+    "sast",
+    "report",
+    "scan",
+    "post-scan"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "scripts": {
+    "dev": "npm run dev:summary",
+    "dev:summary": "nodemon --watch source --exec ts-node source/main.ts --projectXmlReport ./report.xml  --reportAudience user01@test.com,user02@test.com",
+    "dev:consolidated": "nodemon --watch source --exec ts-node source/main.ts --reportType consolidated --projectName 'Consolidated Test' --projectNamePattern ReportTesting% --reportAudience user01@test.com,user02@test.com",
+    "docs": "docsify serve ./docs",
+    "commit": "git-cz",
+    "ci:release": "semantic-release --verbose",
+    "build": "npm run build:clean; npm run build:code; npm run build:binary",
+    "build:clean": "rm -rf ./build",
+    "build:code": "tsc --project ./tsconfig.json",
+    "build:binary": "pkg --targets node12-win-x64 ./build/main.js --output ./build/dist/cxsat_custom_reporting"
+  },
+  "dependencies": {
+    "dateformat": "3.0.3",
+    "handlebars": "4.7.6",
+    "line-reader": "0.4.0",
+    "lodash": "4.17.15",
+    "log4js": "6.1.0",
+    "mssql": "6.0.1",
+    "nodemailer": "6.4.2",
+    "properties-reader": "1.0.0",
+    "puppeteer-core": "3.0.2",
+    "sanitize-filename": "1.6.3",
+    "validator": "12.1.0",
+    "yargs": "15.3.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "8.2.0",
+    "@commitlint/config-conventional": "8.2.0",
+    "@semantic-release/changelog": "3.0.6",
+    "@semantic-release/commit-analyzer": "7.0.0-beta.7",
+    "@semantic-release/exec": "3.4.0-beta.10",
+    "@semantic-release/git": "7.1.0-beta.11",
+    "@semantic-release/github": "5.6.0-beta.7",
+    "@semantic-release/npm": "6.0.0-beta.9",
+    "@semantic-release/release-notes-generator": "7.3.5",
+    "@types/dateformat": "3.0.1",
+    "@types/flat": "0.0.28",
+    "@types/fs-extra": "8.0.1",
+    "@types/jest": "24.0.25",
+    "@types/line-reader": "0.0.28",
+    "@types/lodash": "4.14.149",
+    "@types/mssql": "6.0.0",
+    "@types/node": "13.1.2",
+    "@types/nodemailer": "6.4.0",
+    "@types/properties-reader": "0.0.1",
+    "@types/puppeteer-core": "2.0.0",
+    "@types/validator": "12.0.1",
+    "@types/yargs": "15.0.3",
+    "commitizen": "4.0.5",
+    "conventional-changelog-conventionalcommits": "4.2.3",
+    "cz-conventional-changelog": "3.0.2",
+    "docsify-cli": "4.4.0",
+    "flat": "5.0.0",
+    "fs-extra": "8.1.0",
+    "husky": "3.1.0",
+    "jest": "25.5.4",
+    "nodemon": "2.0.2",
+    "pkg": "4.4.2",
+    "semantic-release": "16.0.0-beta.46",
+    "ts-jest": "25.4.0",
+    "ts-loader": "6.2.1",
+    "ts-node": "8.5.4",
+    "tslint": "5.20.1",
+    "tslint-config-prettier": "1.18.0",
+    "typedoc": "0.16.7",
+    "typescript": "3.7.4"
+  }
 }

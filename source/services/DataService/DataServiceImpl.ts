@@ -22,6 +22,7 @@ export default class DataServiceImpl implements IDataService {
             user: cnf.database.username,
             password: cnf.database.password,
             server: cnf.database.host,
+            // tslint:disable-next-line: radix
             port: parseInt(cnf.database.port),
             database: 'CxDB',
             options: {
@@ -56,8 +57,6 @@ export default class DataServiceImpl implements IDataService {
     }
 
     public async executeGetCompareScansSummary(newScan: number, oldScan: number): Promise<any[]> {
-        console.debug('executing procedure');
-
         const severityMapping: Map<number, string> = new Map();
         severityMapping.set(3, 'high');
         severityMapping.set(2, 'medium');

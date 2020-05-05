@@ -2,12 +2,12 @@ import mail from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { ISmtpService } from './SmtpService';
-import { LoggerService } from '../LoggerService';
-import { ConfigurationService } from '../ConfigurationService';
+import { LoggerService, ConfigurationService, ArgumentsService } from '../../services';
 import SmtpError from './error/SmtpError';
 
-const log = LoggerService.getLogger('SmtpServiceImpl');
+const args = ArgumentsService.getArgs();
 const cnf = ConfigurationService.getConfig();
+const log = LoggerService.getLogger('SmtpServiceImpl');
 
 export default class SmtpServiceImpl implements ISmtpService {
     private transport: Mail;
@@ -16,6 +16,7 @@ export default class SmtpServiceImpl implements ISmtpService {
     constructor() {
         this.transportOpts = {
             host: cnf.smtp.host,
+            // tslint:disable-next-line: radix
             port: parseInt(cnf.smtp.port),
             auth: {
                 user: cnf.smtp.username,
@@ -54,7 +55,7 @@ export default class SmtpServiceImpl implements ISmtpService {
 
             await this.transport.sendMail(mailOpts);
 
-            log.info('finished sending email to "%s"', cnf.report.audience.join(','));
+            log.info('finished sending email to "%s"', args.report.audience.join(','));
 
             return Promise.resolve();
         } catch (e) {
