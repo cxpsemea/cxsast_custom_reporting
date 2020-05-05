@@ -26,13 +26,13 @@ To create a post scan action you just need:
 
 2. Place the script, the `.bat` file and the and the `config` folder inside the CxSAST Executables folder usually located on `Checkmarx/Executables` and
 
-![](C:\Users\hugom\Projects\cxpsemea\cxsast_custom_reporting\docs\images\executables-folder.PNG)
+![](../images/executables-folder.png)
 
 
 
 3. On CxSAST go to `Management/Scan Settings/Pre & Post Scan Actions` and click on "Create New Actions" button and fill the required fields ex:
 
-   ![](C:\Users\hugom\Projects\cxpsemea\cxsast_custom_reporting\docs\images\reports-creation.PNG)
+   ![](../images/reports-creation.png)
 
 Notice that the created `.bat` file will be shown as a Command option.
 

@@ -23,4 +23,4 @@ So the full command will look like this:
 .\cxsast_custom_reporting_v{latestVersion}_win_x64.exe --reportType consolidated --projectName "Consolidated Test" --projectNamePattern ReportTesting% --reportAudience "user01@test.com,user02@test.com"
 ```
 
-See [Report Types](./REPORT_TYPES) page for more details
+See [Report Types](REPORT_TYPES) page for more details

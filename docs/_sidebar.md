@@ -1,5 +1,5 @@
 -   [Home](/)
--   [Instalation](/pages/INSTALLATION.md)
+-   [Installation](/pages/INSTALLATION.md)
 -   [Configuration](/pages/CONFIGURATION.md)
 -   [Utilization](/pages/UTILIZATION.md)
 -   [Report Types](/pages/REPORT_TYPES.md)
@@ -7,6 +7,5 @@
     -   [Consolidated](/pages/REPORT_TYPES_CONSOLIDATED.md)
 -   Advanced topics
     -   [Executing as post-scan actions](/pages/EXECUTING_AS_POST_SCAN_ACTION.md)
-    -   [Customizing templates](/pages/CUSTOMIZING_TEMPLATES.md)
     -   [Contributing](/pages/CONTRIBUTING.md)
 
