@@ -1,13 +1,14 @@
 # CxSAST Custom Reporting
 
-A tool to allow CxSAST admins
-to send custom summary reports to a given audience.
+A tool to allow CxSAST admins to send custom reports to a given audience and/or store pdf reports.
 
 ## Motivation
 
 Development team leaders as also management, require more often, to receive concise feedback over project security health. In general, this information is analyzed after a scan is finished on CxSAST by looking at indicators such as the number of total results, the project risk level, etc.
 
 Out-of-the-box CxSAST reports all this information, but, the provided report is lengthy and may disperse the reader's attention.
+
+Also, currently there is no way to get a report with consolidated data of more than one project, that can be very useful when a project is composed by multiple sub-projects for instance a project composed by multiple microservices that are being scanned independently.
 
 ## The proposed solution
 

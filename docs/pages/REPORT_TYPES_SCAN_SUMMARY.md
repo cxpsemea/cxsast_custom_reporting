@@ -1,7 +1,9 @@
 # ScanSummary
+
 The ScanSummary report type provides users a simple report with basic scan information.
 
 ## Supported arguments
+
 The following arguments are supported by the ScanSummary report type during execution:
 
 | Name               | Type   | M/O | Description                                                              |
@@ -12,6 +14,7 @@ The following arguments are supported by the ScanSummary report type during exec
 | `projectXmlReport` | string | `M` | The path of the XMLReport that should be used for determining the scanId |
 
 ## Data structures
+
 The ScanSummary exposes the following data structure to the HtmlRenderingService:
 
 <table>
@@ -85,7 +88,19 @@ The ScanSummary exposes the following data structure to the HtmlRenderingService
             <td colspan="2"><code>scanPreset</code></td>
             <td><code>string</code></td>
             <td><code>M</code></td>
-            <td>Thre preset used for scanning</td>
+            <td>The preset used for scanning</td>
+        </tr>
+        <tr>
+            <td colspan="2"><code>generatedAt</code></td>
+            <td><code>string</code></td>
+            <td><code>M</code></td>
+            <td>The date and time of report generation</td>
+        </tr>
+        <tr>
+            <td colspan="2"><code>year</code></td>
+            <td><code>string</code></td>
+            <td><code>M</code></td>
+            <td>The current year (just to be displayed on the footer)</td>
         </tr>
         <tr>
             <td colspan="2"><code>scanTotals</code></td>
@@ -145,6 +160,7 @@ The ScanSummary exposes the following data structure to the HtmlRenderingService
 </table>
 
 ### IScanResultsBySeverity
+
 <table>
     <thead>
         <tr>
@@ -185,8 +201,10 @@ The ScanSummary exposes the following data structure to the HtmlRenderingService
     </tbody>
 </table>
 
-### IScanResultsBySeverity
+### IScanResultsByStatus
+
 The folloing interface represents scan resuls agregated by status.
+
 <table>
     <thead>
         <tr>
@@ -222,29 +240,33 @@ The folloing interface represents scan resuls agregated by status.
 </table>
 
 ## Data structure example
-Bellow you can find an example of a ScanSummary data structure object:
+
+Bellow you can find an example of a ScanSummary data structure object as an example:
 
 ```json
 {
-    "productVersion": "8.8.0.72 HF18",
-    "projectId": 31,
-    "projectName": "Nodegoat",
-    "scanId": 1000091,
-    "scanType": "Full Scan",
-    "scanRisk": 53,
-    "scanLoc": 27833,
-    "scanLocFailed": 3,
-    "scanFiles": 81,
-    "scanPreset": "Checkmarx Default",
-    "scanTotals": {
-        "bySeverity": { "high": 29, "medium": 28, "low": 38, "info": 0 },
-        "byStatus": { "new": 88, "fixed": 0, "recurrent": 7 }
-    },
-    "scanResultStatus": {
-        "new": { "high": 28, "medium": 28, "low": 32, "info": 0 },
-        "fixed": { "high": 0, "medium": 0, "low": 0, "info": 0 },
-        "recurrent": { "high": 1, "medium": 0, "low": 6, "info": 0 },
-        "total": { "high": 29, "medium": 28, "low": 38, "info": 0 }
-    }
+  "productVersion": "8.8.0.72 HF18",
+  "projectId": 44,
+  "projectName": "ReportTesting_PhpGoat_Original(Don't touch)",
+  "scanId": 1000167,
+  "scanType": "Full Scan",
+  "scanRisk": 28,
+  "scanLoc": 95376,
+  "scanLocFailed": 252,
+  "scanFiles": 127,
+  "scanPreset": "Checkmarx Default",
+  "scanTotals": {
+    "bySeverity": { "high": 2, "medium": 8, "low": 39, "info": 0 },
+    "byStatus": { "new": 0, "fixed": 0, "recurrent": 49 },
+    "total": 49
+  },
+  "scanResultStatus": {
+    "new": { "high": 0, "medium": 0, "low": 0, "info": 0 },
+    "fixed": { "high": 0, "medium": 0, "low": 0, "info": 0 },
+    "recurrent": { "high": 2, "medium": 8, "low": 39, "info": 0 },
+    "total": { "high": 2, "medium": 8, "low": 39, "info": 0 }
+  },
+  "generatedAt": "Monday, May 4th, 2020, 6:29:10 PM",
+  "year": "2020"
 }
 ```

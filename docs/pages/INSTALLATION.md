@@ -1,11 +1,11 @@
-# Instalation
+# Installation
 
 ## Pre-conditions
 
 The CxSAST Custom Reporting uses a database connection and a mail server to extract and send information respectively. Base on this, ensure that:
 
-1. proper credentials of read-only database user with access to the CxSAST databases;
-2. proper credentials of a user on the desired mail server
+1. proper credentials of read-only database user with access to the CxSAST databases
+2. proper credentials of a user on the desired mail server (if you want the report to send the reports to a specified list of email)
 3. latest release of the CxSAST Custom Reporting that can be downloaded from the [**project's releases page**](https://github.com/cxpsemea/cxsast_custom_reporting/releases)
 
 ## Installation steps
@@ -22,7 +22,7 @@ Follow the instructions below to perform the installation:
 
 Below you can find the output of the `tree` command executed against a temporary environment after following the steps listed above. For the purpose of this example, we are assuming that CxSAST is installed on `D:\Checkmarx`.
 
-```dos
+```powershell
 C:\>tree /f D:\Checkmarx\Executables
 ...
 D:\CHECKMARX\EXECUTABLES
