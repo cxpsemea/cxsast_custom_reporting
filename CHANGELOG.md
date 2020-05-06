@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.2.0...v1.2.1) (2020-05-06)
+
+
+### Bug Fixes
+
+* **pdf generator service:** move the chrome exe path to the confi.ini ([d585a66](https://github.com/cxpsemea/cxsast_custom_reporting/commit/d585a66ca4eb6c72d5cc842494db3c62946fe1df))
+
 # [1.2.0](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.1.0...v1.2.0) (2020-05-05)
 
 
