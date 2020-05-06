@@ -31,11 +31,20 @@ The `[smtp]` configuration section is responsible for configuring how the CxSAST
 
 ## [pdf] section
 
-The `[pdf]` configuration section is responsible for configuring where the CxSAST Custom Reporting will store the generated pdf file. The following key-value pairs are available within this section:
+The `[pdf]` configuration section is responsible for the pdf generator service.
 
-| Key          | type       | M/O | Description                                                                        |
-| ------------ | ---------- | --- | ---------------------------------------------------------------------------------- |
-| `outputPath` | _`string`_ | _O_ | the path where the pdf report file will be placed (relative to script root folder) |
+#### Important
+
+Since we are using the `puppeteer-core` package, **is necessary to install google chrome** and provide the `.exe` path. This means that the report is generated from the same `.html` templates used to generate the email report. This way we ensure that if anyone customize the template the report look will always be consistent on email and on pdf.
+
+See [puppeteer-core](https://www.npmjs.com/package/puppeteer-core) npm page for more details.
+
+The following key-value pairs are available within this section:
+
+| Key             | type       | M/O | Description                                                                                              |
+| --------------- | ---------- | --- | -------------------------------------------------------------------------------------------------------- |
+| `chromeExePath` | string     | _O_ | the path to the google chrome .exe file Ex.'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe' |
+| `outputPath`    | _`string`_ | _O_ | the path where the pdf report file will be placed (relative to script root folder)                       |
 
 ## Configuration example
 
@@ -57,5 +66,6 @@ password=smtp_password
 sender=smtp_sender
 
 [pdf]
+chromeExePath=C:/Program Files (x86)/Google/Chrome/Application/chrome.exe
 outputPath=pdf-reports
 ```

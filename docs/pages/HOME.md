@@ -18,6 +18,16 @@ The way CxSAST Custom Reporting is implemented allows admins to provide an ad-ho
 
 Over this documentation, CxSAST Custom Reporting users can find all relevant information to install, configure, use the application, nevertheless you can contact your Checkmarx Team in case you need deeper understanding or support on the implementation.
 
+## Features
+
+This script gives the possibility to:
+
+- Generate a **summary report** giving a overview of a specific project
+- Generate a **consolidated** report with the a aggregation of data of the last scan of multiple projects. This can be very useful when a project is composed by multiple sub-projects/microservices.
+- Send report emails to a given mailing list
+- Generate reports as a pdf file
+- Generate reports on a post-scan action
+
 ## Using this documentation
 
 Users can navigate through the complete documentation by navigating over the sections present on the left side.

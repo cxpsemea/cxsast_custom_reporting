@@ -1,27 +1,29 @@
 # Consolidated
+
 The Consolidated report type provides users a report consolidating multiple project's last scan data.
 
 ## Supported arguments
+
 The following arguments are supported by the Consolidated report type during execution:
 
-| Name                 | Type   | M/O  | Description                                                  |
-| -------------------- | ------ | ---- | ------------------------------------------------------------ |
-| `reportType`         | string | `M`  | The report type to be generated. Should be `Consolidated`    |
-| `reportTemplate`     | string | `M`  | The report template to be used. Default is `ScanSummary`     |
-| `reportAudience`     | list   | `M`  | A comma delimited list of emails that should receive the report |
-| `projectNamePattern` | string | `M`  | A sql 'like' wildcard the will be used to select projects based on their names. Please see the [wildcard table](#projectNamePattern) bellow |
+| Name                 | Type   | M/O | Description                                                                                                                                 |
+| -------------------- | ------ | --- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `reportType`         | string | `M` | The report type to be generated. Should be `Consolidated`                                                                                   |
+| `reportTemplate`     | string | `M` | The report template to be used. Default is `ScanSummary`                                                                                    |
+| `reportAudience`     | list   | `M` | A comma delimited list of emails that should receive the report                                                                             |
+| `projectNamePattern` | string | `M` | A sql 'like' wildcard the will be used to select projects based on their names. Please see the [wildcard table](#projectNamePattern) bellow |
 
 #### projectNamePattern
 
-| Wildcard | Description                                                  |
-| :------- | :----------------------------------------------------------- |
-| '%a'     | Finds any values that end with "a"                           |
-| 'a%'     | Finds any values that start with "a"                         |
-| '%or%'   | Finds any values that have "or" in any position              |
-| '_r%'    | Finds any values that have "r" in the second position        |
-| 'a_%'    | Finds any values that start with "a" and are at least 2 characters in length |
-| 'a__%'   | Finds any values that start with "a" and are at least 3 characters in length |
-| 'a%o'    | Finds any values that start with "a" and ends with "o"       |
+| Wildcard | Description                                                                  |
+| :------- | :--------------------------------------------------------------------------- |
+| `'%a'`   | Finds any values that end with "a"                                           |
+| `'a%'`   | Finds any values that start with "a"                                         |
+| `'%or%'` | Finds any values that have "or" in any position                              |
+| `'_r%'`  | Finds any values that have "r" in the second position                        |
+| `'a_%'`  | Finds any values that start with "a" and are at least 2 characters in length |
+| `'a__%'` | Finds any values that start with "a" and are at least 3 characters in length |
+| `'a%o'`  | Finds any values that start with "a" and ends with "o"                       |
 
 ## Data structures
 
@@ -147,8 +149,6 @@ The ScanSummary exposes the following data structure to the HtmlRenderingService
   </tbody>
 </table>
 
-
-
 ### IScanResultsBySeverity
 
 <table>
@@ -191,7 +191,6 @@ The ScanSummary exposes the following data structure to the HtmlRenderingService
     </tbody>
 </table>
 
-
 ### IScanResultsByStatus
 
 The following interface represents scan results aggregated by status.
@@ -229,7 +228,6 @@ The following interface represents scan results aggregated by status.
         </tr>
     </tbody>
 </table>
-
 
 ### IScanResultsByState
 
@@ -280,7 +278,6 @@ The following interface represents scan results aggregated by state.
         </tr>
     </tbody>
 </table>
-
 
 ### IScan
 
@@ -378,10 +375,6 @@ The following interface represents a scan.
     </tr>
   </tbody>
 </table>
-
-
-
-
 
 ## Data structure example
 
@@ -635,5 +628,4 @@ Bellow you can find an example of a Consolidated data structure object:
     }
   ]
 }
-
 ```
