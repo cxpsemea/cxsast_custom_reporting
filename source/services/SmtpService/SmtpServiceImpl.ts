@@ -34,8 +34,8 @@ export default class SmtpServiceImpl implements ISmtpService {
     /**
      * sends an email message
      *
-     * @param _subject the messagge subject
-     * @param _audience the messagge audience
+     * @param _subject the message subject
+     * @param _audience the message audience
      * @param _body the message body
      */
     public async sendEmail(_subject: string, _audience: string[], _body: string): Promise<void> {
@@ -50,7 +50,7 @@ export default class SmtpServiceImpl implements ISmtpService {
             log.debug(
                 'sending email using TransportOptions=%j MessageOptions=%j',
                 { ...this.transportOpts, auth: { user: '******', pass: '******' } },
-                { ...mailOpts, html: 'OMMITED' }
+                { ...mailOpts, html: 'OMITTED' }
             );
 
             await this.transport.sendMail(mailOpts);

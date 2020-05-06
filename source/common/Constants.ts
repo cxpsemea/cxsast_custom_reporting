@@ -37,6 +37,7 @@ export const CONFIG_FILE_KEY_SMTP_PASSWORD = 'smtp.password'
 export const CONFIG_FILE_KEY_SMTP_SENDER = 'smtp.sender'
 export const CONFIG_FILE_KEY_LOGGER_LEVEL = 'logger.level'
 export const CONFIG_FILE_KEY_PDF_PATH = 'pdf.outputPath'
+export const CONFIG_CHROME_EXE_PATH = 'pdf.chromeExePath'
 
 export const REPORT_TEMPLATES_BY_TYPE: IStringTMap<string> = {
   [REPORT_TYPE_SCANSUMMARY]: REPORT_TYPE_SCANSUMMARY_DEFAULT_TEMPLATE,

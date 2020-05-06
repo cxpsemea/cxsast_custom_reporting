@@ -10,12 +10,14 @@ import { REPORT_TYPE_SCANSUMMARY, REPORT_TYPE_CONSOLIDATED } from './common/Cons
 import { summaryReport, consolidatedReport } from './components'
 import { inspect } from 'util'
 
+const log = LoggerService.getLogger('main')
 const args = ArgumentsService.getArgs()
 const config = ConfigurationService.getConfig()
-const log = LoggerService.getLogger('main')
 const html = HtmlRenderingService.getInstance()
 const smtp = SmtpService.getInstance()
 const pdf = PdfService.getInstance()
+
+const isPdfGeneratorConfigured = (): boolean => config.pdf.outputPath !== 'null' && config.pdf.chromeExePath !== 'null'
 
 const main = async () => {
   try {
@@ -23,7 +25,6 @@ const main = async () => {
     let reportTitle: string = ''
 
     const { type, audience, template } = args.report
-    const { outputPath } = config.pdf
 
     switch (type) {
       case REPORT_TYPE_SCANSUMMARY:
@@ -53,8 +54,8 @@ const main = async () => {
         await smtp.sendEmail(reportTitle, audience, reportHtml)
       }
 
-      if (outputPath !== 'null') {
-        await pdf.generatePdf(reportTitle, outputPath, reportHtml)
+      if (isPdfGeneratorConfigured()) {
+        await pdf.generatePdf(reportTitle, reportHtml)
       }
     }
   } catch (e) {

@@ -25,6 +25,7 @@ export interface IConfigurationObject {
     sender: string
   }
   pdf: {
+    chromeExePath: string
     outputPath: string
   }
   toString(): string

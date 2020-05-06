@@ -1,7 +1,7 @@
 import PdfServiceImpl from './PdfServiceImpl'
 
 export interface IPdfService {
-  generatePdf(reportTitle: string, outputPath: string, body: string): Promise<void>
+  generatePdf(reportTitle: string, body: string): Promise<void>
 }
 
 let instance: IPdfService

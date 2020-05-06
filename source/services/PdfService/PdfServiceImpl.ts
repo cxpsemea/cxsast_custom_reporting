@@ -2,11 +2,12 @@ import puppeteer from 'puppeteer-core'
 import fs from 'fs-extra'
 import sanitize from 'sanitize-filename'
 import { join as pathJoin, resolve as pathResolve } from 'path'
-import { LoggerService } from '../../services'
+import { LoggerService, ConfigurationService } from '../../services'
 import { IPdfService } from './PdfService'
 import PdfError from './error/PdfError'
 
 const log = LoggerService.getLogger('PdfServiceImpl')
+const cnf = ConfigurationService.getConfig()
 
 export default class PdfServiceImpl implements IPdfService {
   private launchOptions: any
@@ -14,7 +15,7 @@ export default class PdfServiceImpl implements IPdfService {
   constructor() {
     this.launchOptions = {
       headless: true,
-      executablePath: 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
+      executablePath: cnf.pdf.chromeExePath,
       args: ['--start-maximized'],
     }
   }
@@ -22,15 +23,16 @@ export default class PdfServiceImpl implements IPdfService {
   /**
    * generates a pdf file
    *
+   * @param reportTitle the title that will appear on the report
    * @param html the message body
    */
-  public async generatePdf(reportTitle: string, outputPath: string, html: string): Promise<void> {
+  public async generatePdf(reportTitle: string, html: string): Promise<void> {
     try {
       log.debug('creating report in pdf format')
 
       const browser = await puppeteer.launch(this.launchOptions)
       const page = await browser.newPage()
-      const pdfFilePath = pathResolve(pathJoin(process.cwd(), outputPath))
+      const pdfFilePath = pathResolve(pathJoin(process.cwd(), cnf.pdf.outputPath))
       const fileName = `${sanitize(reportTitle)}-${new Date().getTime()}`
       const completePath = `${pdfFilePath}/${fileName}.pdf`
 

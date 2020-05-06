@@ -14,6 +14,7 @@ import {
   CONFIG_FILE_KEY_DATABASE_PASSWORD,
   CONFIG_FILE_KEY_LOGGER_LEVEL,
   CONFIG_FILE_KEY_PDF_PATH,
+  CONFIG_CHROME_EXE_PATH,
 } from '../../common/Constants'
 import { isEmpty, isEmail, isFqdn, isIPV4, isInteger } from '../../common/Validator'
 
@@ -53,6 +54,7 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
         sender: this.parseValue(CONFIG_FILE_KEY_SMTP_SENDER, KeyType.EMAIL),
       },
       pdf: {
+        chromeExePath: this.parseValue(CONFIG_CHROME_EXE_PATH, KeyType.STRING, false),
         outputPath: this.parseValue(CONFIG_FILE_KEY_PDF_PATH, KeyType.STRING, false),
       },
       toString: () =>
