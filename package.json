@@ -35,7 +35,7 @@
     "docs": "docsify serve ./docs",
     "commit": "git-cz",
     "ci:release": "semantic-release --verbose",
-    "build": "npm run build:clean; npm run build:code; npm run build:binary",
+    "build": "npm run build:clean && npm run build:code && npm run build:binary",
     "build:clean": "rm -rf ./build",
     "build:code": "tsc --project ./tsconfig.json",
     "build:binary": "pkg --targets node12-win-x64 ./build/main.js --output ./build/dist/cxsat_custom_reporting"
@@ -81,7 +81,7 @@
     "conventional-changelog-conventionalcommits": "^4.5.0",
     "cz-conventional-changelog": "3.0.2",
     "docsify-cli": "^4.4.2",
-    "flat": "5.0.0",
+    "flat": "^5.0.1",
     "fs-extra": "8.1.0",
     "husky": "3.1.0",
     "jest": "25.5.4",
@@ -94,6 +94,6 @@
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "typedoc": "0.16.7",
-    "typescript": "3.7.4"
+    "typescript": "^3.7.4"
   }
 }
