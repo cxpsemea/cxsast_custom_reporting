@@ -5,6 +5,7 @@ dist
 node_modules
 reports
 pdf-reports
+samples
 
 ## untracked files
 *.log

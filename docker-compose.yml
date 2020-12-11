@@ -4,9 +4,11 @@ services:
     cxsast-custom-reporting-linux-x64:
         image: ${NAME}:${VERSION}-linux-x64
         container_name: ${NAME}-${VERSION}-linux-x64
+        hostname: ${NAME}
         platform: linux
         volumes: 
             - ./config:/opt/${NAME}/config
+            - ./samples:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-linux
@@ -21,9 +23,13 @@ services:
     cxsast-custom-reporting-linux-x86:
         image: ${NAME}:${VERSION}-linux-x86
         container_name: ${NAME}-${VERSION}-linux-x86
+        hostname: ${NAME}
         platform: linux
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         volumes: 
             - ./config:/opt/${NAME}/config
+            - ./samples:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-linux
@@ -38,10 +44,14 @@ services:
     cxsast-custom-reporting-win-x64:
         image: ${NAME}:${VERSION}-win-x64
         container_name: ${NAME}-${VERSION}-win-x64
+        hostname: ${NAME}
         platform: windows
         dns: ["8.8.8.8"]
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         volumes: 
             - ./config:c:/opt/${NAME}/config
+            - ./samples:c:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-win
@@ -56,10 +66,14 @@ services:
     cxsast-custom-reporting-win-x86:
         image: ${NAME}:${VERSION}-win-x86
         container_name: ${NAME}-${VERSION}-win-x86
+        hostname: ${NAME}
         platform: windows
         dns: ["8.8.8.8"]
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         volumes: 
             - ./config:c:/opt/${NAME}/config
+            - ./samples:c:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-win
@@ -74,9 +88,13 @@ services:
     cxsast-custom-reporting-alpine-x64:
         image: ${NAME}:${VERSION}-alpine-x64
         container_name: ${NAME}-${VERSION}-alpine-x64
+        hostname: ${NAME}
         platform: linux
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         volumes: 
             - ./config:/opt/${NAME}/config
+            - ./samples:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-alpine
@@ -91,9 +109,13 @@ services:
     cxsast-custom-reporting-alpine-x86:
         image: ${NAME}:${VERSION}-alpine-x86
         container_name: ${NAME}-${VERSION}-alpine-x86
+        hostname: ${NAME}
         platform: linux
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         volumes: 
             - ./config:/opt/${NAME}/config
+            - ./samples:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-alpine
@@ -108,9 +130,13 @@ services:
     cxsast-custom-reporting-macos-x64:
         image: ${NAME}:${VERSION}-macos-x64
         container_name: ${NAME}-${VERSION}-macos-x64
+        hostname: ${NAME}
         platform: linux
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         volumes: 
             - ./config:/opt/${NAME}/config
+            - ./samples:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-macos
@@ -125,9 +151,13 @@ services:
     cxsast-custom-reporting-macos-x86:
         image: ${NAME}:${VERSION}-macos-x86
         container_name: ${NAME}-${VERSION}-macos-x86
+        hostname: ${NAME}
         platform: linux
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         volumes: 
             - ./config:/opt/${NAME}/config
+            - ./samples:/opt/${NAME}/samples
         build:
             context: ./
             dockerfile: Dockerfile-macos
@@ -139,3 +169,7 @@ services:
           - .env
         environment: 
             ARCH: x86
+networks: 
+    default:
+        name: ${NAME}
+        driver: bridge
