@@ -30,9 +30,9 @@ const main = async () => {
       case REPORT_TYPE_SCANSUMMARY:
         reportData = await summaryReport()
         if (reportData) {
-          reportTitle = `Checkmarx: ScanSummary for "${reportData.projectName}"`
+          reportTitle = `Checkmarx: ScanSummary report for "${reportData.projectName}"`
         }
-        log.debug('SummaryReport data is %j', reportData)
+        log.debug('ScanSummary report data is %j', reportData)
         break
 
       case REPORT_TYPE_CONSOLIDATED:
