@@ -1,18 +1,16 @@
-FROM node:latest
+FROM node:lts-alpine3.12
 
 ARG VERSION
 ARG NAME
 ARG ARCH
-ARG FILE_EXT
 
 RUN echo ${VERSION} && \
     echo ${NAME} && \
-    echo ${ARCH} && \
-    echo ${FILE_EXT}
+    echo ${ARCH}
 
 RUN node --version && \
     npm --version && \
-    apt-get update
+    apk update
 
 WORKDIR /opt/${NAME}
 
@@ -32,7 +30,7 @@ RUN npm install
 
 RUN ./node_modules/.bin/tsc --project ./tsconfig.json
 
-RUN ./node_modules/.bin/pkg --silent --targets latest-${ARCH} ./build/main.js --output ./../${NAME}-${VERSION}-${ARCH}.${FILE_EXT}
+RUN ./node_modules/.bin/pkg --silent --targets latest-alpine-${ARCH} ./build/main.js --output ./../${NAME}-${VERSION}-alpine-${ARCH}
 
 WORKDIR /opt/${NAME}
 
@@ -41,6 +39,6 @@ RUN rm -rf code
 RUN pwd
 RUN ls -la
 
-RUN chmod +x ${NAME}-${VERSION}-${ARCH}.${FILE_EXT}
+RUN chmod +x ${NAME}-${VERSION}-alpine-${ARCH}
 
-ENTRYPOINT /opt/${NAME}/${NAME}-${VERSION}-${ARCH}.${FILE_EXT}
+ENTRYPOINT /opt/${NAME}/${NAME}-${VERSION}-alpine-${ARCH}

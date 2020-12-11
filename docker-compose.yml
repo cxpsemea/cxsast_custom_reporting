@@ -6,138 +6,136 @@ services:
         container_name: ${NAME}-${VERSION}-linux-x64
         platform: linux
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-linux
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: linux-x64
-                FILE_EXT: ${FILE_EXT_LINUX}
+                ARCH: x64
         env_file:
           - .env
         environment: 
-            ARCH: linux-x64
-            FILE_EXT: ${FILE_EXT_LINUX}
+            ARCH: x64
     cxsast-custom-reporting-linux-x86:
         image: ${NAME}:${VERSION}-linux-x86
         container_name: ${NAME}-${VERSION}-linux-x86
         platform: linux
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-linux
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: linux-x86
-                FILE_EXT: ${FILE_EXT_LINUX}
+                ARCH: x86
         env_file:
           - .env
         environment: 
-            ARCH: linux-x86
-            FILE_EXT: ${FILE_EXT_LINUX}
+            ARCH: x86
     cxsast-custom-reporting-win-x64:
         image: ${NAME}:${VERSION}-win-x64
         container_name: ${NAME}-${VERSION}-win-x64
-        platform: win
+        platform: windows
+        dns: ["8.8.8.8"]
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:c:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-win
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: win-x64
+                ARCH: x64
         env_file:
           - .env
         environment: 
-            ARCH: win-x64
+            ARCH: x64
     cxsast-custom-reporting-win-x86:
         image: ${NAME}:${VERSION}-win-x86
         container_name: ${NAME}-${VERSION}-win-x86
-        platform: win
+        platform: windows
+        dns: ["8.8.8.8"]
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:c:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-win
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: win-x86
+                ARCH: x86
         env_file:
           - .env
         environment: 
-            ARCH: win-x86
+            ARCH: x86
     cxsast-custom-reporting-alpine-x64:
         image: ${NAME}:${VERSION}-alpine-x64
         container_name: ${NAME}-${VERSION}-alpine-x64
-        platform: alpine
+        platform: linux
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-alpine
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: alpine-x64
+                ARCH: x64
         env_file:
           - .env
         environment: 
-            ARCH: alpine-x64
+            ARCH: x64
     cxsast-custom-reporting-alpine-x86:
         image: ${NAME}:${VERSION}-alpine-x86
         container_name: ${NAME}-${VERSION}-alpine-x86
-        platform: alpine
+        platform: linux
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-alpine
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: alpine-x86
+                ARCH: x86
         env_file:
           - .env
         environment: 
-            ARCH: alpine-x86
+            ARCH: x86
     cxsast-custom-reporting-macos-x64:
         image: ${NAME}:${VERSION}-macos-x64
         container_name: ${NAME}-${VERSION}-macos-x64
-        platform: macos
+        platform: linux
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-macos
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: macos-x64
+                ARCH: x64
         env_file:
           - .env
         environment: 
-            ARCH: macos-x64
+            ARCH: x64
     cxsast-custom-reporting-macos-x86:
         image: ${NAME}:${VERSION}-macos-x86
         container_name: ${NAME}-${VERSION}-macos-x86
-        platform: macos
+        platform: linux
         volumes: 
-            - ./config/config.ini:/opt/${NAME}/config/config.ini
+            - ./config:/opt/${NAME}/config
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-macos
             args:
                 VERSION: ${VERSION}
                 NAME: ${NAME}
-                ARCH: macos-x86
+                ARCH: x86
         env_file:
           - .env
         environment: 
-            ARCH: macos-x86
+            ARCH: x86
