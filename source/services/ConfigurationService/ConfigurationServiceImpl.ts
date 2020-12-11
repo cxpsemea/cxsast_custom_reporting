@@ -83,7 +83,7 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
 
     switch (keyType) {
       case KeyType.HOST:
-        if (!isFqdn(val) && !isIPV4(val)) {
+        if (!isFqdn(val) && !isIPV4(val) && !val.includes("\\")) {
           throw new ConfigurationError(
             // @ts-ignore
             ConfigurationError[INVALID_CONFIG_KEY],
