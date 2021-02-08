@@ -17,14 +17,14 @@ export interface IConfigurationObject {
     username: string
     password: string
   }
-  smtp: {
+  smtp?: {
     host: string
     port: string
     username: string
     password: string
     sender: string
   }
-  pdf: {
+  pdf?: {
     chromeExePath: string
     outputPath: string
   }

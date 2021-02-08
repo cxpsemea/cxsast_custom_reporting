@@ -15,12 +15,12 @@ export default class SmtpServiceImpl implements ISmtpService {
 
     constructor() {
         this.transportOpts = {
-            host: cnf.smtp.host,
+            host: cnf.smtp!.host,
             // tslint:disable-next-line: radix
-            port: parseInt(cnf.smtp.port),
+            port: parseInt(cnf.smtp!.port),
             auth: {
-                user: cnf.smtp.username,
-                pass: cnf.smtp.password,
+                user: cnf.smtp!.username,
+                pass: cnf.smtp!.password,
             },
             secure: false,
             tls: {
@@ -41,7 +41,7 @@ export default class SmtpServiceImpl implements ISmtpService {
     public async sendEmail(_subject: string, _audience: string[], _body: string): Promise<void> {
         try {
             const mailOpts: Mail.Options = {
-                from: cnf.smtp.sender,
+                from: cnf.smtp!.sender,
                 to: _audience,
                 subject: _subject,
                 html: _body,
