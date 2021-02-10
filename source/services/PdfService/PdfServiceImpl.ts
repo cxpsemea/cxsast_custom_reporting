@@ -15,7 +15,7 @@ export default class PdfServiceImpl implements IPdfService {
   constructor() {
     this.launchOptions = {
       headless: true,
-      executablePath: cnf.pdf.chromeExePath,
+      executablePath: cnf.pdf!.chromeExePath,
       args: ['--start-maximized'],
     }
   }
@@ -32,7 +32,7 @@ export default class PdfServiceImpl implements IPdfService {
 
       const browser = await puppeteer.launch(this.launchOptions)
       const page = await browser.newPage()
-      const pdfFilePath = pathResolve(pathJoin(process.cwd(), cnf.pdf.outputPath))
+      const pdfFilePath = pathResolve(pathJoin(process.cwd(), cnf.pdf!.outputPath))
       const fileName = `${sanitize(reportTitle)}-${new Date().getTime()}`
       const completePath = `${pdfFilePath}/${fileName}.pdf`
 

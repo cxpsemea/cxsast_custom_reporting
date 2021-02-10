@@ -5,7 +5,7 @@ SELECT
     ScanDetails.ProductVersion as "productVersion",
     CAST(Project.Id as int) as "id",
     Project.Name as name,
-    Project.OpenedAt as "openedAt",
+    Scan.VersionDate as "openedAt",
     CAST(Scan.Id as int) as "lastScanId",
     (SELECT CASE ScanType WHEN 1 THEN 'Full Scan' END) as "scanType",
     ScanDetails.PresetName as "scanPreset",
@@ -23,6 +23,7 @@ WHERE Scan.Id IN (
       INNER JOIN CxDB.dbo.TaskScans Scan ON  Scan.ProjectId = Project.Id
     WHERE Project.Name LIKE '%s'
       AND Project.is_deprecated = 0
+      AND Scan.is_deprecated = 0
       AND Project.Owning_Team IN (SELECT TeamId
       from CxDB.dbo.Teams)
     GROUP BY Project.Id

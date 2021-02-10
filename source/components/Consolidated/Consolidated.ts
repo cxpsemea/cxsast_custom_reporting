@@ -112,7 +112,7 @@ const consolidatedReport = async (): Promise<IConsolidatedData> => {
 
   if (consolidatedData && Object.keys(consolidatedData).length) {
     const today = new Date()
-    consolidatedData.generatedAt = dateFormat(today, 'dddd, mmmm dS, yyyy, h:MM:ss TT')
+    consolidatedData.generatedAt = dateFormat(today, 'mmmm dS, yyyy h:MM:ss TT')
     consolidatedData.year = dateFormat(today, 'yyyy')
 
     log.info('finished retrieving data for the selected projects')

@@ -46,23 +46,29 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
         username: this.parseValue(CONFIG_FILE_KEY_DATABASE_USERNAME, KeyType.STRING),
         password: this.parseValue(CONFIG_FILE_KEY_DATABASE_PASSWORD, KeyType.STRING),
       },
-      smtp: {
-        host: this.parseValue(CONFIG_FILE_KEY_SMTP_HOST, KeyType.HOST),
-        port: this.parseValue(CONFIG_FILE_KEY_SMTP_PORT, KeyType.INTEGER),
-        username: this.parseValue(CONFIG_FILE_KEY_SMTP_USERNAME, KeyType.STRING),
-        password: this.parseValue(CONFIG_FILE_KEY_SMTP_PASSWORD, KeyType.STRING),
-        sender: this.parseValue(CONFIG_FILE_KEY_SMTP_SENDER, KeyType.EMAIL),
-      },
-      pdf: {
-        chromeExePath: this.parseValue(CONFIG_CHROME_EXE_PATH, KeyType.STRING, false),
-        outputPath: this.parseValue(CONFIG_FILE_KEY_PDF_PATH, KeyType.STRING, false),
-      },
       toString: () =>
         JSON.stringify({
           ...this.config,
           database: { ...this.config.database, username: '******', password: '******' },
           smtp: { ...this.config.smtp, username: '******', password: '******' },
         }),
+    }
+
+    if (this.props.get(CONFIG_FILE_KEY_SMTP_HOST)) {
+      this.config.smtp = {
+        host: this.parseValue(CONFIG_FILE_KEY_SMTP_HOST, KeyType.HOST),
+        port: this.parseValue(CONFIG_FILE_KEY_SMTP_PORT, KeyType.INTEGER),
+        username: this.parseValue(CONFIG_FILE_KEY_SMTP_USERNAME, KeyType.STRING),
+        password: this.parseValue(CONFIG_FILE_KEY_SMTP_PASSWORD, KeyType.STRING),
+        sender: this.parseValue(CONFIG_FILE_KEY_SMTP_SENDER, KeyType.EMAIL),
+      }
+    }
+
+    if (this.props.get(CONFIG_FILE_KEY_PDF_PATH)) {
+      this.config.pdf = {
+        chromeExePath: this.parseValue(CONFIG_CHROME_EXE_PATH, KeyType.STRING, false),
+        outputPath: this.parseValue(CONFIG_FILE_KEY_PDF_PATH, KeyType.STRING, false),
+      }
     }
   }
 
@@ -83,10 +89,10 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
 
     switch (keyType) {
       case KeyType.HOST:
-        if (!isFqdn(val) && !isIPV4(val)) {
+        if (!isFqdn(val) && !isIPV4(val) && !val.includes('\\')) {
           throw new ConfigurationError(
             // @ts-ignore
-            ConfigurationError[INVALID_CONFIG_KEY],
+            ConfigurationError.INVALID_CONFIG_KEY,
             key
           )
         }
@@ -97,7 +103,7 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
           // @ts-ignore
           throw new ConfigurationError(
             // @ts-ignore
-            ConfigurationError[INVALID_CONFIG_KEY],
+            ConfigurationError.INVALID_CONFIG_KEY,
             key
           )
         }
@@ -107,7 +113,7 @@ export default class ConfigurationServiceImpl implements IConfigurationService {
         if (!isInteger(val)) {
           throw new ConfigurationError(
             // @ts-ignore
-            ConfigurationError[INVALID_CONFIG_KEY],
+            ConfigurationError.INVALID_CONFIG_KEY,
             key
           )
         }

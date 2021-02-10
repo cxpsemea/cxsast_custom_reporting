@@ -14,17 +14,14 @@ const log = LoggerService.getLogger('main')
 const args = ArgumentsService.getArgs()
 const config = ConfigurationService.getConfig()
 const html = HtmlRenderingService.getInstance()
-const smtp = SmtpService.getInstance()
-const pdf = PdfService.getInstance()
-
-const isPdfGeneratorConfigured = (): boolean => config.pdf.outputPath !== 'null' && config.pdf.chromeExePath !== 'null'
 
 const main = async () => {
   try {
     let reportData: any
     let reportTitle: string = ''
-
     const { type, audience, template } = args.report
+    const isOutputEmailConfigured = !!config.smtp && args.report.audience.length > 0
+    const isOutputPdfConfigured = !!config.pdf && !!config.pdf.outputPath && !!config.pdf.chromeExePath
 
     switch (type) {
       case REPORT_TYPE_SCANSUMMARY:
@@ -50,12 +47,16 @@ const main = async () => {
     if (reportData) {
       const reportHtml = await html.renderTemplate(reportData, template)
 
-      if (audience) {
-        await smtp.sendEmail(reportTitle, audience, reportHtml)
-      }
+      if (isOutputEmailConfigured || isOutputPdfConfigured) {
+        if (isOutputEmailConfigured) {
+          SmtpService.getInstance().sendEmail(reportTitle, audience, reportHtml)
+        }
 
-      if (isPdfGeneratorConfigured()) {
-        await pdf.generatePdf(reportTitle, reportHtml)
+        if (isOutputPdfConfigured) {
+          PdfService.getInstance().generatePdf(reportTitle, reportHtml)
+        }
+      } else {
+        throw new Error("there isn't any output specified (email or pdf)")
       }
     }
   } catch (e) {
