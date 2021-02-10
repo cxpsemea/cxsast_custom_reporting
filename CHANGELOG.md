@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.2.1...v1.2.2) (2021-02-10)
+
+
+### Bug Fixes
+
+* **datetime:** fix report scan dateTime ([036646f](https://github.com/cxpsemea/cxsast_custom_reporting/commit/036646f74af8502bca0a9e938e5273c8b6c5d08c))
+
 ## [1.2.1](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.2.0...v1.2.1) (2020-05-06)
 
 
