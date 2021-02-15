@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.2.2...v1.2.3) (2021-02-15)
+
+
+### Bug Fixes
+
+* **#22:** change consolidated data fetch to stored procedures ([850588b](https://github.com/cxpsemea/cxsast_custom_reporting/commit/850588b3c8c76fc796e07e50758fb3bf0e9592a2)), closes [#22](https://github.com/cxpsemea/cxsast_custom_reporting/issues/22)
+
 ## [1.2.2](https://github.com/cxpsemea/cxsast_custom_reporting/compare/v1.2.1...v1.2.2) (2021-02-10)
 
 

@@ -2,7 +2,7 @@
   "private": true,
   "license": "MIT",
   "name": "cxsast_custom_reporting",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "Marcelo Pereira <marcgp@gmail.com>",
   "contributors": [
     "Hugo Mota <hugo.dpmota@gmail.com>"
