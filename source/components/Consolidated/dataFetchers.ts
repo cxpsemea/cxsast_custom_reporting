@@ -1,7 +1,8 @@
 import ConsolidatedError from './ConsolidatedError'
 import { format as formatString } from 'util'
-import { QUERY_PREVIOUS_SCAN_ID, QUERY_PROJECT_DETAILS, QUERY_SCAN_STATES_AND_QUERIES } from './constants'
+import { QUERY_PREVIOUS_SCAN_ID, QUERY_PROJECT_DETAILS } from './constants'
 import { IProject } from './IConsolidatedData'
+import { IReportResult, IQueryReport } from '../../services/DataService/DataService'
 import { LoggerService } from '../../services'
 
 const log = LoggerService.getLogger('Consolidated Data Fetchers')
@@ -48,10 +49,18 @@ export const getScansCompareTotals = async (lastScanId: number, previousScanId: 
   return scanTotalsQueryResult
 }
 
-export const getScanStates = async (lastScanId: number, ds: any) => {
-  const scanStatesQueryResult = await ds.executeQuery(formatString(QUERY_SCAN_STATES_AND_QUERIES, lastScanId))
+export const getScanReportQueriesData = async (lastScanId: number, ds: any): Promise<[IQueryReport]> => {
+  const scanReportQueriesData = await ds.executeGetScanReportQueriesData(lastScanId)
 
-  log.debug('retrieved the states from database for the scan %s', lastScanId)
+  log.info('retrieved the queries data for the scan  %s', lastScanId)
 
-  return scanStatesQueryResult
+  return scanReportQueriesData
+}
+
+export const getScanReportResults = async (lastScanId: number, ds: any): Promise<[IReportResult]> => {
+  const scanReportResults = await ds.executeGetScanReportResults(lastScanId)
+
+  log.info('retrieved the scan report results for the scan  %s', lastScanId)
+
+  return scanReportResults
 }
