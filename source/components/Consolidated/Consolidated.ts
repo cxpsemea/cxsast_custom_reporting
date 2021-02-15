@@ -1,10 +1,16 @@
-import { orderBy, cloneDeep } from 'lodash'
+import { orderBy, cloneDeep, uniqBy } from 'lodash'
 import dateFormat from 'dateformat'
 import DataService from '../../services/DataService/DataService'
-import { IProject, IConsolidatedData, IScan, IStateQueryResult, IScanTotalsCompare } from './IConsolidatedData'
+import { IProject, IConsolidatedData, IScan, IScanTotalsCompare } from './IConsolidatedData'
 import { LoggerService, ArgumentsService } from '../../services'
 import { CONSOLIDATED_DATA_TEMPLATE, SCAN_TEMPLATE } from './constants'
-import { getSelectedProjects, getPreviousScanId, getScansCompareTotals, getScanStates } from './dataFetchers'
+import {
+  getSelectedProjects,
+  getPreviousScanId,
+  getScansCompareTotals,
+  getScanReportResults,
+  getScanReportQueriesData,
+} from './dataFetchers'
 
 const args = ArgumentsService.getArgs()
 const log = LoggerService.getLogger('Consolidated')
@@ -25,7 +31,8 @@ const fetchData = async (): Promise<any> => {
 
         const previousScanId = await getPreviousScanId(project, ds)
         const compareTotals = await getScansCompareTotals(project.lastScanId, previousScanId, ds)
-        const scanStates = await getScanStates(project.lastScanId, ds)
+        const queriesData = await getScanReportQueriesData(project.lastScanId, ds)
+        const scanStates = uniqBy(await getScanReportResults(project.lastScanId, ds), 'pathId')
 
         // COMBINED: results
         consolidatedData.combinedResults.scanRisk = Math.max(
@@ -40,7 +47,7 @@ const fetchData = async (): Promise<any> => {
         scan.openedAt = dateFormat(project.openedAt, 'dd/mm/yy, h:MM:ss TT')
         scan.projectName = project.name
 
-        scanStates.forEach(({ state, queryName, severity, severityLabel }: IStateQueryResult) => {
+        scanStates.forEach(({ state, queryVersionCode, severityLabel }) => {
           consolidatedData.combinedResults.byState[state]++
           scan.scanTotals.byState[state]++
 
@@ -48,20 +55,25 @@ const fetchData = async (): Promise<any> => {
           scan.scanTotals.stateBySeverity[severityLabel][state]++
 
           // COMBINED: set vulnerabilities
+
           if (state !== 'notExploitable') {
             // remove not exploitable results from the vulnerabilities
-            const key = queryName.toLowerCase()
-
             consolidatedData.combinedResults.total++
 
-            consolidatedData.combinedResults.vulnerabilities[key]
-              ? consolidatedData.combinedResults.vulnerabilities[key].occurrences++
-              : (consolidatedData.combinedResults.vulnerabilities[key] = {
+            if (consolidatedData.combinedResults.vulnerabilities[queryVersionCode]) {
+              consolidatedData.combinedResults.vulnerabilities[queryVersionCode].occurrences++
+            } else {
+              const queryData = queriesData.find((queryItem) => queryItem.versionCode === queryVersionCode)
+
+              if (queryData) {
+                consolidatedData.combinedResults.vulnerabilities[queryVersionCode] = {
                   occurrences: 1,
-                  severity,
+                  severity: queryData.severity,
                   severityLabel,
-                  name: queryName.split('_').join(' '),
-                })
+                  name: queryData.name,
+                }
+              }
+            }
           }
 
           scan.scanTotals.severityTotalsWithNotExploitable[severityLabel]++

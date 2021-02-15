@@ -44,18 +44,6 @@ export const QUERY_PREVIOUS_SCAN_ID = `
   FETCH NEXT 1 ROW ONLY
 `
 
-export const QUERY_SCAN_STATES_AND_QUERIES = `
-    SELECT 
-        Date as date,
-		    Name as queryName,
-        Result.Severity as severity,
-        (SELECT CASE Result.Severity WHEN 3 THEN 'high' WHEN 2 THEN 'medium' WHEN 1 THEN 'low' WHEN 0 THEN 'info' END) as 'severityLabel',
-        (SELECT CASE State WHEN 0 THEN 'toVerify' WHEN 1 THEN 'notExploitable' WHEN 2 THEN 'confirmed' WHEN 3 THEN 'urgent' WHEN 4 THEN 'proposedNotExploitable' END) as 'state' 
-    FROM CxDB.CxEntities.Result Result
-	      INNER JOIN CxDB.dbo.QueryVersion Query ON  Query.QueryVersionCode = QueryVersionId
-    WHERE ScanId = %s
-`
-
 export const QUERY_PROJECT_STATUS = `
   SELECT
       (SELECT CASE Query.Severity WHEN 3 THEN 'high' WHEN 2 THEN 'medium' WHEN 1 THEN 'low' WHEN 0 THEN 'info' END) as "severity",

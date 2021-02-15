@@ -1,6 +1,5 @@
-type Severities = 'high' | 'medium' | 'low' | 'info'
-type States = 'confirmed' | 'notExploitable' | 'proposedNotExploitable' | 'toVerify' | 'urgent'
-type Status = 'new' | 'fixed' | 'recurrent'
+export type Severities = 'high' | 'medium' | 'low' | 'info'
+export type States = 'confirmed' | 'notExploitable' | 'proposedNotExploitable' | 'toVerify' | 'urgent'
 
 interface IScanResultsByStatus {
   fixed: number
@@ -75,7 +74,7 @@ export interface IProject {
 }
 
 export interface IStateQueryResult {
-  queryName: string
+  queryVersionCode: number
   severity: number
   severityLabel: Severities
   state: States
