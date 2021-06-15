@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "dateformat": "3.0.3",
-    "handlebars": "4.7.6",
+    "handlebars": "4.7.7",
     "line-reader": "0.4.0",
     "lodash": "4.17.21",
     "log4js": "6.1.0",
