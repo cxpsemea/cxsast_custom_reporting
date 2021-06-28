@@ -81,7 +81,7 @@
     "conventional-changelog-conventionalcommits": "^4.6.0",
     "cz-conventional-changelog": "3.0.2",
     "docsify-cli": "^4.4.3",
-    "flat": "5.0.0",
+    "flat": "5.0.2",
     "fs-extra": "8.1.0",
     "husky": "6.0.0",
     "jest": "25.5.4",
