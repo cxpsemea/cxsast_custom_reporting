@@ -69,7 +69,7 @@
     "@types/fs-extra": "8.0.1",
     "@types/jest": "24.0.25",
     "@types/line-reader": "0.0.28",
-    "@types/lodash": "4.14.149",
+    "@types/lodash": "4.14.170",
     "@types/mssql": "6.0.8",
     "@types/node": "13.1.2",
     "@types/nodemailer": "6.4.0",
