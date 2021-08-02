@@ -86,7 +86,7 @@
     "husky": "7.0.1",
     "jest": "25.5.4",
     "nodemon": "2.0.12",
-    "pkg": "4.4.2",
+    "pkg": "5.3.1",
     "semantic-release": "17.2.3",
     "ts-jest": "25.5.1",
     "ts-loader": "8.0.10",
