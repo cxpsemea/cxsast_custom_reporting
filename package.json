@@ -73,7 +73,7 @@
     "@types/mssql": "7.1.3",
     "@types/node": "13.1.2",
     "@types/nodemailer": "6.4.4",
-    "@types/properties-reader": "0.0.1",
+    "@types/properties-reader": "2.1.1",
     "@types/puppeteer-core": "2.0.0",
     "@types/validator": "13.6.3",
     "@types/yargs": "17.0.2",
