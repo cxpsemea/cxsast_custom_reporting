@@ -74,7 +74,7 @@
     "@types/node": "16.9.1",
     "@types/nodemailer": "6.4.4",
     "@types/properties-reader": "2.1.1",
-    "@types/puppeteer-core": "2.0.0",
+    "@types/puppeteer-core": "5.4.0",
     "@types/validator": "13.6.3",
     "@types/yargs": "17.0.2",
     "commitizen": "^4.2.4",
