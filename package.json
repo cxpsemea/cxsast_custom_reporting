@@ -52,7 +52,7 @@
     "puppeteer-core": "10.2.0",
     "sanitize-filename": "1.6.3",
     "validator": "13.6.0",
-    "yargs": "17.0.1"
+    "yargs": "17.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
