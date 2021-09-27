@@ -66,7 +66,7 @@
     "@semantic-release/release-notes-generator": "9.0.3",
     "@types/dateformat": "3.0.1",
     "@types/flat": "5.0.2",
-    "@types/fs-extra": "9.0.12",
+    "@types/fs-extra": "9.0.13",
     "@types/jest": "27.0.1",
     "@types/line-reader": "0.0.34",
     "@types/lodash": "4.14.173",
