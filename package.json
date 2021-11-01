@@ -75,7 +75,7 @@
     "@types/nodemailer": "6.4.4",
     "@types/properties-reader": "2.1.1",
     "@types/puppeteer-core": "5.4.0",
-    "@types/validator": "13.6.5",
+    "@types/validator": "13.6.6",
     "@types/yargs": "17.0.4",
     "commitizen": "^4.2.4",
     "conventional-changelog-conventionalcommits": "^4.6.1",
