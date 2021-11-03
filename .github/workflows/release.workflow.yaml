@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '16.13.x'
 
       - name: prepare environment
         run: sudo apt-get update && sudo apt-get install -y zip pandoc
