@@ -51,7 +51,7 @@
     "properties-reader": "2.2.0",
     "puppeteer-core": "10.4.0",
     "sanitize-filename": "1.6.3",
-    "validator": "13.6.0",
+    "validator": "13.7.0",
     "yargs": "17.2.1"
   },
   "devDependencies": {
