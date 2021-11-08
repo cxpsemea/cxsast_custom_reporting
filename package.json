@@ -64,7 +64,7 @@
     "@semantic-release/github": "8.0.1",
     "@semantic-release/npm": "8.0.2",
     "@semantic-release/release-notes-generator": "10.0.2",
-    "@types/dateformat": "3.0.1",
+    "@types/dateformat": "5.0.0",
     "@types/flat": "5.0.2",
     "@types/fs-extra": "9.0.13",
     "@types/jest": "27.0.2",
