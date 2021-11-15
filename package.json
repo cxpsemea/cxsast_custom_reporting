@@ -88,7 +88,7 @@
     "nodemon": "2.0.14",
     "pkg": "5.4.1",
     "semantic-release": "18.0.0",
-    "ts-jest": "25.5.1",
+    "ts-jest": "27.0.7",
     "ts-loader": "9.2.6",
     "ts-node": "10.4.0",
     "tslint": "6.1.3",
