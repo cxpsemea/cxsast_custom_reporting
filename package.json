@@ -67,7 +67,7 @@
     "@types/dateformat": "5.0.0",
     "@types/flat": "5.0.2",
     "@types/fs-extra": "9.0.13",
-    "@types/jest": "27.0.2",
+    "@types/jest": "27.0.3",
     "@types/line-reader": "0.0.34",
     "@types/lodash": "4.14.176",
     "@types/mssql": "7.1.4",
