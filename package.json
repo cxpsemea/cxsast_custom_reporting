@@ -78,7 +78,7 @@
     "@types/validator": "13.7.1",
     "@types/yargs": "17.0.7",
     "commitizen": "^4.2.4",
-    "conventional-changelog-conventionalcommits": "^4.6.1",
+    "conventional-changelog-conventionalcommits": "^4.6.2",
     "cz-conventional-changelog": "3.3.0",
     "docsify-cli": "^4.4.3",
     "flat": "5.0.2",
