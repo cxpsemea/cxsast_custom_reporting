@@ -71,7 +71,7 @@
     "@types/line-reader": "0.0.34",
     "@types/lodash": "4.14.178",
     "@types/mssql": "7.1.4",
-    "@types/node": "17.0.17",
+    "@types/node": "20.3.1",
     "@types/nodemailer": "6.4.4",
     "@types/properties-reader": "2.1.1",
     "@types/puppeteer-core": "5.4.0",
